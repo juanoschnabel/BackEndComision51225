@@ -86,8 +86,8 @@ class ProductManager {
 const productManager = new ProductManager("./info.txt");
 
 productManager.addProduct(
-  "GUANTE BOXEO EVERLAST",
-  "GUANTE EVERLAST 12 OZ BOXEO, KICK BOXING, MUAY THAY",
+  "GUANTES BOXEO EVERLAST",
+  "GUANTE EVERLAST 12 OZ",
   250000,
   "img.jpg",
   80,
@@ -95,8 +95,8 @@ productManager.addProduct(
 );
 
 productManager.addProduct(
-  "PAR DE VENDAS 3M",
-  "VENDAS DE BOXEO 3 METROS",
+  "VENDAS 3M",
+  "VENDAS DE 3 METROS",
   800,
   "img.jpg",
   100,
@@ -104,7 +104,7 @@ productManager.addProduct(
 );
 
 productManager.addProduct(
-  "GUANTINES PARA BOLSA BOXEO",
+  "GUANTINES",
   "GUANTINES PARA BOLSA DE BOXEO, KICK BOXING, MUAY THAY. TALLE S-M-L",
   200,
   "img.jpg",
@@ -113,7 +113,7 @@ productManager.addProduct(
 );
 
 productManager.addProduct(
-  "BOLSA DE BOXEO RELLENO DE TELA",
+  "BOLSA DE BOXEO",
   "BOLSA DE BOXEO 120CM CON RELLENO DE TELA PARA BOXEO, KICK BOXING, MUAY THAY",
   180,
   "img.jpg",
