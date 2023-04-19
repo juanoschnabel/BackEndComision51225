@@ -1,26 +1,29 @@
-import { ProductManager } from "./ProductManager.js";
 import express from "express";
-const productManager = new ProductManager("./info.txt");
+import productRouter from "./routes/product.routes.js";
+import { __direname } from "./path.js";
+import multer from "multer";
+import cartRouter from "./routes/cart.routes.js";
+
 const app = express();
 const PORT = 8080;
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "src/public/img");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${file.originalname}`);
+  },
+});
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.get("/products", async (req, res) => {
-  let products = await productManager.getProducts();
-  const Newproducts = JSON.parse(products);
-  const { limit } = req.query;
-  const newLimit = Number(limit);
-  if (limit) {
-    const newArray = Newproducts.slice(0, newLimit);
-    res.send(JSON.stringify(newArray));
-  } else {
-    res.send(JSON.stringify(products));
-  }
-});
-
-app.get("/products/:pid", async (req, res) => {
-  const product = await productManager.getProductById(req.params.pid);
-  res.send(product);
+const upload = multer({ storage: storage });
+app.use("/products", productRouter);
+app.use("/cart", cartRouter);
+app.use("/static", express.static(__direname + "/public"));
+app.post("/upload", upload.single("product"), (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
+  res.send("imagen subida");
 });
 app.listen(PORT, () => {
   console.log(`Server on port ${PORT}`);
