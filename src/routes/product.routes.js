@@ -15,8 +15,15 @@ productRouter.get("/", async (req, res) => {
 });
 productRouter.get("/:pid", async (req, res) => {
   const product = await productManager.getProductById(req.params.pid);
-  res.send(product);
+  res.render("product", {
+    title: product.title,
+    description: product.description,
+    price: product.price,
+    code: product.code,
+    stock: product.stock,
+  });
 });
+
 productRouter.post("/", async (req, res) => {
   const {
     title,
@@ -28,7 +35,7 @@ productRouter.post("/", async (req, res) => {
     stock,
     category,
   } = req.body;
-  await productManager.addProduct(
+  const result = await productManager.addProduct(
     title,
     description,
     price,
@@ -38,7 +45,11 @@ productRouter.post("/", async (req, res) => {
     stock,
     category
   );
-  res.send("Producto creado exitosamente");
+  if (result === null) {
+    res.send("Producto creado exitosamente");
+  } else {
+    res.send("ocurrio un error en la carga. Intente nuevamente");
+  }
 });
 
 productRouter.put("/:id", async (req, res) => {

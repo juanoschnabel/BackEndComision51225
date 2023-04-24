@@ -1,8 +1,6 @@
 import { promises as fs } from "fs";
 export class ProductManager {
   constructor(path) {
-    this.products = [];
-    this.idCounter = 1;
     this.path = path;
   }
   async getProducts() {
@@ -24,7 +22,6 @@ export class ProductManager {
       return "Error al leer el archivo JSON";
     }
   }
-
   async addProduct(
     title,
     description,
@@ -44,11 +41,14 @@ export class ProductManager {
       if (!stock || stock === "") return console.log("Faltan datos de stock");
       if (!status || status === "") return (status = true);
       if (!category || category === "") return "Faltan datos de category";
-      const codes = this.products.map((product) => product.code);
-      if (codes.includes(code)) {
+      const prodsJSON = await fs.readFile(this.path, "utf-8");
+      const prods = JSON.parse(prodsJSON);
+      if (prods.some((prod) => prod.code === code)) {
         console.log("Ya existe un producto con este código");
       } else {
-        const id = this.idCounter++;
+        const prodsJSON = await fs.readFile(this.path, "utf-8");
+        const prods = JSON.parse(prodsJSON);
+        const id = prods.length + 1;
         const product = {
           id,
           title,
@@ -60,11 +60,13 @@ export class ProductManager {
           status,
           category,
         };
-        this.products.push(product);
-        this.reescribirTxt("creado");
+        prods.push(product);
+        await fs.writeFile(this.path, JSON.stringify(prods));
+        console.log("Producto creado");
+        return null;
       }
     } catch (error) {
-      return error;
+      console.error(error);
     }
   }
 
@@ -110,13 +112,13 @@ export class ProductManager {
       return error;
     }
   }
-  async reescribirTxt(word) {
-    try {
-      await fs.writeFile(this.path, "");
-      await fs.writeFile(this.path, JSON.stringify(this.products));
-      console.log(`producto ${word} exitosamente`);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async reescribirTxt(word) {
+  //   // try {
+  //   // await fs.writeFile(this.path, "");
+  //   await fs.writeFile(this.path, JSON.stringify(this.products));
+  //   console.log(`producto ${word} exitosamente`);
+  //   // } catch (error) {
+  //   // console.error(error);
+  //   // }
+  // }
 }
