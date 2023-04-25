@@ -82,7 +82,7 @@ app.post("/upload", upload.single("product"), (req, res) => {
 app.get("/", async (req, res) => {
   let products = await productManager.getProducts();
   res.render("home", {
-    titulo: "titulo de prueba",
+    titulo: "HOME - TODOS LOS PRODUCTOS",
     products: products,
   });
 });

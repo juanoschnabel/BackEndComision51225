@@ -7,23 +7,31 @@ productRouter.get("/", async (req, res) => {
   const { limit } = req.query;
   const newLimit = Number(limit);
   if (limit) {
-    const newArray = products.slice(0, newLimit);
-    res.send(newArray);
+    products = products.slice(0, newLimit);
+    res.render("home", {
+      titulo: `${newLimit} productos mostrados`,
+      products: products,
+    });
   } else {
-    res.send(products);
+    res.render("home", {
+      titulo: `HOME - Todos los productos`,
+      products: products,
+    });
   }
 });
 productRouter.get("/:pid", async (req, res) => {
   const product = await productManager.getProductById(req.params.pid);
   res.render("product", {
+    titulo: "Product / filtrado por Id",
     title: product.title,
     description: product.description,
     price: product.price,
     code: product.code,
     stock: product.stock,
+    noExiste: product != false,
+    mensaje: "Producto no encontrado",
   });
 });
-
 productRouter.post("/", async (req, res) => {
   const {
     title,
@@ -48,10 +56,9 @@ productRouter.post("/", async (req, res) => {
   if (result === null) {
     res.send("Producto creado exitosamente");
   } else {
-    res.send("ocurrio un error en la carga. Intente nuevamente");
+    res.send(result);
   }
 });
-
 productRouter.put("/:id", async (req, res) => {
   const id = req.params.id;
   const {
@@ -64,7 +71,6 @@ productRouter.put("/:id", async (req, res) => {
     stock,
     category,
   } = req.body;
-
   const mensaje = await productManager.updateProduct(id, {
     title,
     description,
@@ -78,7 +84,6 @@ productRouter.put("/:id", async (req, res) => {
 
   res.send(mensaje);
 });
-
 productRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
   const mensaje = await productManager.deleteProduct(id);
