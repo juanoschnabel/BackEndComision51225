@@ -10,16 +10,12 @@ export class ProductManager {
   }
 
   async getProductById(id) {
-    // try {
     const prods = await this.getProducts();
     if (prods.some((prod) => prod.id === parseInt(id))) {
       return prods.find((prod) => prod.id === parseInt(id));
     } else {
       return false;
     }
-    // } catch (error) {
-    //   return error;
-    // }
   }
   async addProduct(
     title,
@@ -53,7 +49,9 @@ export class ProductManager {
         console.log("Faltan datos de stock");
         return "Faltan datos de stock";
       }
-      if (!status || status === "") return (status = true);
+      if (status === "") {
+        status = true;
+      }
       if (!category || category === "") {
         console.log("Faltan datos de category");
         return "Faltan datos de category";
@@ -99,8 +97,9 @@ export class ProductManager {
         prods[index].status = status;
         prods[index].stock = stock;
         prods[index].category = category;
-        await fs.writeFile(this.path, JSON.stringify(prods));
-        console.log("Producto actualizado");
+        // await fs.writeFile(this.path, JSON.stringify(prods));
+        // console.log("Producto actualizado");
+        await this.reescribirTxt("actualizado", prods);
         return "Producto actualizado";
       } else {
         return "Producto no encontrado";

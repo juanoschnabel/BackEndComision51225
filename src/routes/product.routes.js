@@ -36,7 +36,7 @@ productRouter.get("/:pid", async (req, res) => {
     id: product.id,
   });
 });
-productRouter.post("/", async (req, res) => {
+productRouter.post("/realtimeproducts", async (req, res) => {
   const {
     title,
     description,
@@ -57,12 +57,31 @@ productRouter.post("/", async (req, res) => {
     stock,
     category
   );
+  let products = await productManager.getProducts();
   if (result === null) {
-    res.send("Producto creado exitosamente");
+    // res.send("Producto creado exitosamente");
+    res.render("realTimeProducts", {
+      titulo: "real time products",
+      title: products.title,
+      description: products.description,
+      price: products.price,
+      code: products.code,
+      stock: products.stock,
+      thumbnail: products.thumbnail,
+      category: products.category,
+      status: products.status,
+      id: products.id,
+      mensaje: "producto creado exitosamente",
+    });
   } else {
-    res.send(result);
+    // res.send(result);
+    res.render("realTimeProducts", {
+      titulo: "real time products",
+      mensaje: `${result}`,
+    });
   }
 });
+
 productRouter.put("/:id", async (req, res) => {
   const id = req.params.id;
   const {

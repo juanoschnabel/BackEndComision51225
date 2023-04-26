@@ -31,18 +31,29 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const upload = multer({ storage: storage });
 //ServerIO
+// const io = new Server(server);
+// io.on("connection", (socket) => {
+//   console.log("Cliente conectado");
+//   socket.on("mensaje", (info) => {
+//     console.log(info);
+//   });
+//   socket.on("user", (info) => {
+//     console.log(info);
+//     socket.emit("confirmacionAcceso", "Acceso permitido");
+//   });
+//   //Mensaje que se envia a los clientes conectados a otros sockets
+//   socket.broadcast.emit("mensaje-socket-propio", "Datos jugadores");
+// });
+
 const io = new Server(server);
+const mensajes = [];
 io.on("connection", (socket) => {
-  console.log("Cliente conectado");
+  console.log("cliente conectado");
   socket.on("mensaje", (info) => {
     console.log(info);
+    mensajes.push(info);
+    io.emit("mensajes", mensajes);
   });
-  socket.on("user", (info) => {
-    console.log(info);
-    socket.emit("confirmacionAcceso", "Acceso permitido");
-  });
-  //Mensaje que se envia a los clientes conectados a otros sockets
-  socket.broadcast.emit("mensaje-socket-propio", "Datos jugadores");
 });
 //ROUTES
 app.use("/api/products", productRouter);
@@ -55,34 +66,16 @@ app.post("/upload", upload.single("product"), (req, res) => {
   res.send("imagen subida");
 });
 //HBS
-// app.get("/", (req, res) => {
-//   const tutor = {
-//     nombre: "Luciana",
-//     email: "lu@lu.com",
-//     rol: "Tutor",
-//   };
-//   const cursos = [
-//     {
-//       numero: "123",
-//       nombre: "Programacion Backend",
-//       dia: "LyM",
-//       horario: "Noche",
-//     },
-//     { numero: "456", nombre: "React", dia: "S", horario: "Mañana" },
-//     { numero: "789", nombre: "Angular", dia: "MyJ", horario: "Tarde" },
-//   ];
-//   res.render("home", {
-//     titulo: "Plataforma CoderHouse 51225",
-//     mensaje: "Hola buenos dias",
-//     user: tutor,
-//     isTutor: tutor.rol === "Tutor",
-//     cursos: cursos,
-//   });
-// });
 app.get("/", async (req, res) => {
   let products = await productManager.getProducts();
   res.render("home", {
     titulo: "HOME - TODOS LOS PRODUCTOS",
     products: products,
   });
+});
+app.get("/chat", (req, res) => {
+  res.render("index");
+});
+app.get("/realtimeproducts", (req, res) => {
+  res.render("realTimeProducts");
 });
