@@ -1,13 +1,25 @@
-{{#each products}}
-  <div>
-    <p>titulo: {{this.title}}</p>
-    <p>description: {{this.description}}</p>
-    <p>price: {{this.price}}</p>
-    <p>code: {{this.code}}</p>
-    <p>stock: {{this.stock}}</p>
-    <p>status: {{this.status}}</p>
-    <p>category: {{this.category}}</p>
-    <p>id: {{this.id}}</p>
-    <p>imagen: {{this.thumbnail}}</p>
+<div class="card-group d-flex">
+  <div class="row row-cols-3">
+    {{#each products}}
+      <div class="card">
+        <div class="text-center">
+          <source srcset="..." type="image/svg+xml" />
+          <img
+            src="{{this.thumbnail}}"
+            class="img-fluid img-thumbnail"
+            alt="Imagen del producto"
+          /></div>
+        <div class="card-body">
+          <h5 class="card-title">titulo: {{this.title}}</h5>
+          <p class="card-text">descripcion: {{this.description}}</p>
+          <p class="card-text">precio: {{this.price}}</p>
+          <p class="card-text">codigo: {{this.code}}</p>
+          <p class="card-text">stock: {{this.stock}}</p>
+          <p class="card-text">estado: {{this.status}}</p>
+          <p class="card-text">categoria: {{this.category}}</p>
+          <p class="card-text">id: {{this.id}}</p>
+        </div>
+      </div>
+    {{/each}}
   </div>
-{{/each}}
+</div>

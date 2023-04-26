@@ -28,8 +28,12 @@ productRouter.get("/:pid", async (req, res) => {
     price: product.price,
     code: product.code,
     stock: product.stock,
-    noExiste: product != false,
+    thumbnail: product.thumbnail,
+    category: product.category,
+    status: product.status,
+    existe: product != false,
     mensaje: "Producto no encontrado",
+    id: product.id,
   });
 });
 productRouter.post("/", async (req, res) => {

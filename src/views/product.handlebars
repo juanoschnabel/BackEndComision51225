@@ -1,28 +1,27 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {{! <link rel="stylesheet" href="./../public/css/styles.css" /> }}
-    <title>{{titulo}}</title>
-  </head>
-  <body>
-    {{#if noExiste}}
-      <div>
-        <p>{{title}}</p>
-        <p>{{description}}</p>
-        <p>{{price}}</p>
-        <p>{{code}}</p>
-        <p>{{stock}}</p>
+{{#if existe}}
+  <div class="card-group d-flex">
+    <div class="row row-cols-12">
+      <div class="card">
+        <div class="text-center">
+          <source srcset="..." type="image/svg+xml" />
+          <img
+            src="{{thumbnail}}"
+            class="img-fluid img-thumbnail"
+            alt="Imagen del producto"
+          /></div>
+        <div class="card-body">
+          <h5 class="card-title">titulo: {{title}}</h5>
+          <p class="card-text">descripcion: {{description}}</p>
+          <p class="card-text">precio: {{price}}</p>
+          <p class="card-text">codigo: {{code}}</p>
+          <p class="card-text">stock: {{stock}}</p>
+          <p class="card-text">estado: {{status}}</p>
+          <p class="card-text">categoria: {{category}}</p>
+          <p class="card-text">id: {{id}}</p>
+        </div>
       </div>
-    {{else}}
-      <h4>{{mensaje}}</h4>
-    {{/if}}
-    {{! <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
-      integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script> }}
-  </body>
-</html>
+    </div>
+  </div>
+{{else}}
+  <h4>{{mensaje}}</h4>
+{{/if}}
