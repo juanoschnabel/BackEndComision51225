@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ProductManager } from "../ProductManager.js";
 const productManager = new ProductManager("./info.txt");
 const productRouter = Router();
+// const socket = io();
 productRouter.get("/", async (req, res) => {
   let products = await productManager.getProducts();
   const { limit } = req.query;
@@ -36,6 +37,23 @@ productRouter.get("/:pid", async (req, res) => {
     id: product.id,
   });
 });
+// const io = new Server(server);
+// const mensajes = await productManager.getProducts();
+// io.on("connection", (socket) => {
+//   console.log("cliente conectado");
+//   socket.on("mensaje", (info) => {
+//     console.log(info);
+//     mensajes.push(info);
+//     io.emit("mensajes", mensajes);
+//   });
+// });
+productRouter.get("/realtimeproducts", async (req, res) => {
+  let products = await productManager.getProducts();
+  res.render("realTimeProducts", {
+    titulo: `HOME - Todos los productos`,
+    products: products,
+  });
+});
 productRouter.post("/realtimeproducts", async (req, res) => {
   const {
     title,
@@ -60,24 +78,48 @@ productRouter.post("/realtimeproducts", async (req, res) => {
   let products = await productManager.getProducts();
   if (result === null) {
     // res.send("Producto creado exitosamente");
+    // res.render("realTimeProducts", {
+    //   titulo: "real time products",
+    //   title: products.title,
+    //   description: products.description,
+    //   price: products.price,
+    //   code: products.code,
+    //   stock: products.stock,
+    //   thumbnail: products.thumbnail,
+    //   category: products.category,
+    //   status: products.status,
+    //   id: products.id,
+    //   mensaje: "producto creado exitosamente",
+    // });
+
     res.render("realTimeProducts", {
-      titulo: "real time products",
-      title: products.title,
-      description: products.description,
-      price: products.price,
-      code: products.code,
-      stock: products.stock,
-      thumbnail: products.thumbnail,
-      category: products.category,
-      status: products.status,
-      id: products.id,
-      mensaje: "producto creado exitosamente",
+      titulo: `real time products`,
+      products: products,
+    });
+    socket.emit("mensaje", {
+      titulo: `real time products`,
+      products: products,
     });
   } else {
     // res.send(result);
+    // res.render("realTimeProducts", {
+    //   titulo: "real time products",
+    //   mensaje: `${result}`,
+    // });
     res.render("realTimeProducts", {
-      titulo: "real time products",
-      mensaje: `${result}`,
+      titulo: `real time products`,
+      products: products,
+    });
+    socket.emit("mensaje", {
+      titulo: result.title,
+      descripcion: result.description,
+      precio: result.price,
+      categoria: result.category,
+      stock: result.stock,
+      status: result.status,
+      imagen: result.thumbnail,
+      codigo: result.code,
+      id: result.id,
     });
   }
 });

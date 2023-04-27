@@ -31,28 +31,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const upload = multer({ storage: storage });
 //ServerIO
-// const io = new Server(server);
-// io.on("connection", (socket) => {
-//   console.log("Cliente conectado");
-//   socket.on("mensaje", (info) => {
-//     console.log(info);
-//   });
-//   socket.on("user", (info) => {
-//     console.log(info);
-//     socket.emit("confirmacionAcceso", "Acceso permitido");
-//   });
-//   //Mensaje que se envia a los clientes conectados a otros sockets
-//   socket.broadcast.emit("mensaje-socket-propio", "Datos jugadores");
-// });
-
 const io = new Server(server);
-const mensajes = [];
+const productos = await productManager.getProducts();
 io.on("connection", (socket) => {
   console.log("cliente conectado");
   socket.on("mensaje", (info) => {
     console.log(info);
-    mensajes.push(info);
-    io.emit("mensajes", mensajes);
+    productos.push(info);
+    io.emit("productos", productos);
   });
 });
 //ROUTES
