@@ -14,13 +14,29 @@ const formEliminar = document.getElementById("eliminar");
 const cards = document.getElementById("producto");
 const inputDeleteButtons = document.querySelectorAll("#inputDelete");
 let productoIngresado = [];
+function eliminarProducto(id) {
+  socket.emit("productoEliminado", id);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 4000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+  Toast.fire({
+    icon: "success",
+    title: "Producto eliminado correctamente!",
+  });
+}
 inputDeleteButtons.forEach((inputDeleteButton) => {
   inputDeleteButton.addEventListener("click", (e) => {
     e.preventDefault();
     let id = Number(e.target.value);
-    socket.emit("productoEliminado", id);
-    console.log(id);
-    id;
+    eliminarProducto(id);
   });
 });
 form.addEventListener("submit", (e) => {
@@ -35,9 +51,50 @@ form.addEventListener("submit", (e) => {
     stock: stock.value,
     category: category.value,
   };
-  productoIngresado.push(nuevoProducto);
-  socket.emit("productoIngresado", productoIngresado);
-  productoIngresado = [];
+  if (
+    title.value &&
+    description.value &&
+    price.value &&
+    thumbnail.value &&
+    code.value &&
+    stock.value &&
+    category.value != ""
+  ) {
+    productoIngresado.push(nuevoProducto);
+    socket.emit("productoIngresado", productoIngresado);
+    productoIngresado = [];
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: "Producto creado exitosamente!",
+    });
+  } else {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 4000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+    Toast.fire({
+      icon: "error",
+      title: "Faltan completar campos!",
+    });
+  }
 });
 
 socket.on("nuevosproductos", (arrayProductos) => {
@@ -70,9 +127,7 @@ const actualizarListaProductos = (arrayProductos) => {
     deleteButton.textContent = "ELIMINAR";
     deleteButton.addEventListener("click", (e) => {
       let id = Number(e.target.value);
-      socket.emit("productoEliminado", id);
-      console.log(id);
-      e.preventDefault();
+      eliminarProducto(id);
     });
     deleteButtonContainer.appendChild(deleteButton);
     card.appendChild(deleteButtonContainer);

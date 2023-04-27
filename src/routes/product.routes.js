@@ -118,7 +118,6 @@ productRouter.delete("/realtimeproducts", async (req, res) => {
   res.render("realTimeProducts", {
     titulo: `real time products`,
     products: mensaje,
-    mensaje: mensaje,
   });
 });
 export default productRouter;

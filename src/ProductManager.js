@@ -104,8 +104,6 @@ export class ProductManager {
         prods[index].status = status;
         prods[index].stock = stock;
         prods[index].category = category;
-        // await fs.writeFile(this.path, JSON.stringify(prods));
-        // console.log("Producto actualizado");
         await this.reescribirTxt("actualizado", prods);
         return "Producto actualizado";
       } else {
