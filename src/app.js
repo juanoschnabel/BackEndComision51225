@@ -32,13 +32,31 @@ app.use(express.json());
 const upload = multer({ storage: storage });
 //ServerIO
 const io = new Server(server);
-const productos = await productManager.getProducts();
+// const productos = await productManager.getProducts();
 io.on("connection", (socket) => {
   console.log("cliente conectado");
-  socket.on("mensaje", (info) => {
-    console.log(info);
-    productos.push(info);
-    io.emit("productos", productos);
+  socket.on("productoIngresado", async ([info]) => {
+    const title = info.title;
+    const description = info.description;
+    const price = info.price;
+    const thumbnail = info.thumbnail;
+    const code = info.code;
+    const status = info.status;
+    const stock = info.stock;
+    const category = info.category;
+    await productManager.addProduct(
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      status,
+      stock,
+      category
+    );
+    const newProducts = await productManager.getProducts();
+
+    io.emit("nuevosproductos", newProducts);
   });
 });
 //ROUTES
@@ -62,6 +80,10 @@ app.get("/", async (req, res) => {
 app.get("/chat", (req, res) => {
   res.render("index");
 });
-app.get("/realtimeproducts", (req, res) => {
-  res.render("realTimeProducts");
+app.get("/realtimeproducts", async (req, res) => {
+  const getProducts = await productManager.getProducts();
+  res.render("realTimeProducts", {
+    titulo: "real time products",
+    products: getProducts,
+  });
 });

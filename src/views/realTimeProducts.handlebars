@@ -101,9 +101,8 @@
         id="eliminar"
       >Eliminar</button>
     </form>
-    <p id="producto"></p>
     <div class="card-group d-flex">
-  <div class="row row-cols-3">
+  <div class="row row-cols-3" id="producto">
     {{#each products}}
       <div class="card">
         <div class="text-center">
@@ -114,8 +113,8 @@
             alt="Imagen del producto"
           /></div>
         <div class="card-body">
-          <h5 class="card-title">titulo: {{titulo}}</h5>
-          <p class="card-text">descripcion: {{descripcion}}</p>
+          <h5 class="card-title">titulo: {{title}}</h5>
+          <p class="card-text">descripcion: {{description}}</p>
           <p class="card-text">precio: {{price}}</p>
           <p class="card-text">codigo: {{code}}</p>
           <p class="card-text">stock: {{stock}}</p>
