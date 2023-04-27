@@ -1,5 +1,4 @@
 <html lang="en">
-
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -9,14 +8,6 @@
 
   <body>
     <form id="form">
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Id</label>
-        <input
-          type="text"
-          class="form-control"
-          id="id"
-          aria-describedby="emailHelp"
-        />
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">titulo</label>
         <input
@@ -89,42 +80,56 @@
           aria-describedby="emailHelp"
         />
       </div>
-      <button type="submit" class="btn btn-primary" id="enviar">Crear</button>
       <button
         type="submit"
         class="btn btn-primary"
-        id="modificar"
-      >Modificar</button>
+        id="enviar"
+        value="enviar"
+        name="enviar"
+      >Crear</button>
+    </form>
+    <form id="eliminar">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Id</label>
+        <input
+          type="text"
+          class="form-control"
+          id="id"
+          aria-describedby="emailHelp"
+        />
+      </div>
       <button
         type="submit"
         class="btn btn-primary"
-        id="eliminar"
+        id=""
+        value=""
+        name=""
       >Eliminar</button>
     </form>
     <div class="card-group d-flex">
-  <div class="row row-cols-3" id="producto">
-    {{#each products}}
-      <div class="card">
-        <div class="text-center">
-          <source srcset="..." type="image/svg+xml" />
-          <img
-            src="{{this.thumbnail}}"
-            class="img-fluid img-thumbnail"
-            alt="Imagen del producto"
-          /></div>
-        <div class="card-body">
-          <h5 class="card-title">titulo: {{title}}</h5>
-          <p class="card-text">descripcion: {{description}}</p>
-          <p class="card-text">precio: {{price}}</p>
-          <p class="card-text">codigo: {{code}}</p>
-          <p class="card-text">stock: {{stock}}</p>
-          <p class="card-text">estado: {{status}}</p>
-          <p class="card-text">categoria: {{category}}</p>
-          <p class="card-text">id: {{id}}</p>
-        </div>
+      <div class="row row-cols-3" id="producto">
+        {{#each products}}
+          <div class="card">
+            <div class="text-center">
+              <source srcset="..." type="image/svg+xml" />
+              <img
+                src="{{this.thumbnail}}"
+                class="img-fluid img-thumbnail"
+                alt="Imagen del producto"
+              /></div>
+            <div class="card-body">
+              <h5 class="card-title">titulo: {{title}}</h5>
+              <p class="card-text">descripcion: {{description}}</p>
+              <p class="card-text">precio: {{price}}</p>
+              <p class="card-text">codigo: {{code}}</p>
+              <p class="card-text">stock: {{stock}}</p>
+              <p class="card-text">estado: {{status}}</p>
+              <p class="card-text">categoria: {{category}}</p>
+              <p class="card-text">id: {{id}}</p>
+            </div>
+          </div>
+        {{/each}}
       </div>
-    {{/each}}
-  </div>
-</div>
+    </div>
   </body>
 </html>

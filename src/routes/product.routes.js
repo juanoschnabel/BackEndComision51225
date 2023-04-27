@@ -2,7 +2,7 @@ import { Router } from "express";
 import { ProductManager } from "../ProductManager.js";
 const productManager = new ProductManager("./info.txt");
 const productRouter = Router();
-// const socket = io();
+//API/PRODUCTS
 productRouter.get("/", async (req, res) => {
   let products = await productManager.getProducts();
   const { limit } = req.query;
@@ -37,16 +37,7 @@ productRouter.get("/:pid", async (req, res) => {
     id: product.id,
   });
 });
-// const io = new Server(server);
-// const mensajes = await productManager.getProducts();
-// io.on("connection", (socket) => {
-//   console.log("cliente conectado");
-//   socket.on("mensaje", (info) => {
-//     console.log(info);
-//     mensajes.push(info);
-//     io.emit("mensajes", mensajes);
-//   });
-// });
+//REAL TIME PRODUCTS
 productRouter.get("/realtimeproducts", async (req, res) => {
   let products = await productManager.getProducts();
   res.render("realTimeProducts", {
@@ -77,21 +68,6 @@ productRouter.post("/realtimeproducts", async (req, res) => {
   );
   let products = await productManager.getProducts();
   if (result === null) {
-    // res.send("Producto creado exitosamente");
-    // res.render("realTimeProducts", {
-    //   titulo: "real time products",
-    //   title: products.title,
-    //   description: products.description,
-    //   price: products.price,
-    //   code: products.code,
-    //   stock: products.stock,
-    //   thumbnail: products.thumbnail,
-    //   category: products.category,
-    //   status: products.status,
-    //   id: products.id,
-    //   mensaje: "producto creado exitosamente",
-    // });
-
     res.render("realTimeProducts", {
       titulo: `real time products`,
       products: products,
@@ -101,11 +77,6 @@ productRouter.post("/realtimeproducts", async (req, res) => {
       products: products,
     });
   } else {
-    // res.send(result);
-    // res.render("realTimeProducts", {
-    //   titulo: "real time products",
-    //   mensaje: `${result}`,
-    // });
     res.render("realTimeProducts", {
       titulo: `real time products`,
       products: products,
@@ -149,9 +120,12 @@ productRouter.put("/:id", async (req, res) => {
 
   res.send(mensaje);
 });
-productRouter.delete("/:id", async (req, res) => {
-  const id = req.params.id;
+productRouter.delete("/realtimeproducts", async (req, res) => {
+  const { id } = req.body;
   const mensaje = await productManager.deleteProduct(id);
-  res.send(mensaje);
+  res.render("realTimeProducts", {
+    titulo: `real time products`,
+    products: mensaje,
+  });
 });
 export default productRouter;

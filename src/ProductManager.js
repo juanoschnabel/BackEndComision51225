@@ -8,7 +8,14 @@ export class ProductManager {
     const storage = JSON.parse(txt);
     return storage;
   }
-
+  static incrementarID() {
+    if (this.idIncrement) {
+      this.idIncrement++;
+    } else {
+      this.idIncrement = 1;
+    }
+    return this.idIncrement;
+  }
   async getProductById(id) {
     const prods = await this.getProducts();
     if (prods.some((prod) => prod.id === parseInt(id))) {
@@ -60,7 +67,7 @@ export class ProductManager {
         console.log("Ya existe un producto con este código");
         return "Ya existe un producto con este código";
       } else {
-        const id = prods.length + 1;
+        const id = ProductManager.incrementarID();
         const product = {
           id,
           title,

@@ -32,9 +32,9 @@ app.use(express.json());
 const upload = multer({ storage: storage });
 //ServerIO
 const io = new Server(server);
-// const productos = await productManager.getProducts();
 io.on("connection", (socket) => {
   console.log("cliente conectado");
+
   socket.on("productoIngresado", async ([info]) => {
     const title = info.title;
     const description = info.description;
@@ -58,7 +58,14 @@ io.on("connection", (socket) => {
 
     io.emit("nuevosproductos", newProducts);
   });
+
+  socket.on("productoEliminado", async (id) => {
+    await productManager.deleteProduct(id);
+    const newProducts = await productManager.getProducts();
+    io.emit("nuevosproductos", newProducts);
+  });
 });
+
 //ROUTES
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
@@ -77,9 +84,9 @@ app.get("/", async (req, res) => {
     products: products,
   });
 });
-app.get("/chat", (req, res) => {
-  res.render("index");
-});
+// app.get("/chat", (req, res) => {
+//   res.render("index");
+// });
 app.get("/realtimeproducts", async (req, res) => {
   const getProducts = await productManager.getProducts();
   res.render("realTimeProducts", {
