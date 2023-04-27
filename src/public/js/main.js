@@ -12,8 +12,17 @@ const form = document.getElementById("form");
 const enviar = document.getElementById("enviar");
 const formEliminar = document.getElementById("eliminar");
 const cards = document.getElementById("producto");
+const inputDeleteButtons = document.querySelectorAll("#inputDelete");
 let productoIngresado = [];
-
+inputDeleteButtons.forEach((inputDeleteButton) => {
+  inputDeleteButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    let id = Number(e.target.value);
+    socket.emit("productoEliminado", id);
+    console.log(id);
+    id;
+  });
+});
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const nuevoProducto = {
@@ -30,12 +39,6 @@ form.addEventListener("submit", (e) => {
   socket.emit("productoIngresado", productoIngresado);
   productoIngresado = [];
 });
-formEliminar.addEventListener("submit", (e) => {
-  const id = Number(idForm.value);
-  socket.emit("productoEliminado", id);
-  console.log(id);
-  e.preventDefault();
-});
 
 socket.on("nuevosproductos", (arrayProductos) => {
   actualizarListaProductos(arrayProductos);
@@ -43,24 +46,36 @@ socket.on("nuevosproductos", (arrayProductos) => {
 const actualizarListaProductos = (arrayProductos) => {
   cards.innerHTML = "";
   arrayProductos.forEach((producto) => {
-    cards.innerHTML += `      <div class="card">
-    <div class="text-center">
-      <source srcset="..." type="image/svg+xml" />
-      <img
-        src=${producto.thumbnail}
-        class="img-fluid img-thumbnail"
-        alt="Imagen del producto"
-      /></div>
-    <div class="card-body">
-      <h5 class="card-title">titulo: ${producto.title}</h5>
-      <p class="card-text">descripcion: ${producto.description}</p>
-      <p class="card-text">precio: ${producto.price}</p>
-      <p class="card-text">codigo: ${producto.code}</p>
-      <p class="card-text">stock: ${producto.stock}</p>
-      <p class="card-text">estado: ${producto.status}</p>
-      <p class="card-text">categoria: ${producto.category}</p>
-      <p class="card-text">id: ${producto.id}</p>
-    </div>
-  </div>`;
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="text-center">
+        <img src="${producto.thumbnail}" class="img-fluid img-thumbnail" alt="Imagen del producto"/>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">titulo: ${producto.title}</h5>
+        <p class="card-text">descripcion: ${producto.description}</p>
+        <p class="card-text">precio: ${producto.price}</p>
+        <p class="card-text">codigo: ${producto.code}</p>
+        <p class="card-text">stock: ${producto.stock}</p>
+        <p class="card-text">estado: ${producto.status}</p>
+        <p class="card-text">categoria: ${producto.category}</p>
+        <p class="card-text">id: ${producto.id}</p>
+      </div>`;
+    const deleteButtonContainer = document.createElement("div");
+    deleteButtonContainer.id = "inputDelete";
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-primary";
+    deleteButton.value = producto.id;
+    deleteButton.textContent = "ELIMINAR";
+    deleteButton.addEventListener("click", (e) => {
+      let id = Number(e.target.value);
+      socket.emit("productoEliminado", id);
+      console.log(id);
+      e.preventDefault();
+    });
+    deleteButtonContainer.appendChild(deleteButton);
+    card.appendChild(deleteButtonContainer);
+    cards.appendChild(card);
   });
 };

@@ -7,107 +7,100 @@
   </head>
 
   <body>
-    <form id="form">
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">titulo</label>
-        <input
-          type="text"
-          class="form-control"
-          id="titulo"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">descripcion</label>
-        <input
-          type="text"
-          class="form-control"
-          id="descripcion"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">precio</label>
-        <input
-          type="text"
-          class="form-control"
-          id="precio"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">categoria</label>
-        <input
-          type="text"
-          class="form-control"
-          id="categoria"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">stock</label>
-        <input
-          type="text"
-          class="form-control"
-          id="stock"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">status</label>
-        <input
-          type="text"
-          class="form-control"
-          id="status"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">imagen</label>
-        <input
-          type="text"
-          class="form-control"
-          id="imagen"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">codigo</label>
-        <input
-          type="text"
-          class="form-control"
-          id="codigo"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id="enviar"
-        value="enviar"
-        name="enviar"
-      >Crear</button>
-    </form>
-    <form id="eliminar">
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Id</label>
-        <input
-          type="text"
-          class="form-control"
-          id="id"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        id=""
-        value=""
-        name=""
-      >Eliminar</button>
-    </form>
+    <main class="row justify-content-center">
+      <form class="mt-2 col-9 col-md-4 align-items-sm-center" id="form">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">TITULO</label>
+          <input
+            type="text"
+            class="form-control"
+            id="titulo"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label
+            for="exampleInputEmail1"
+            class="form-label fs-5"
+          >DESCRIPCIÓN</label>
+          <input
+            type="text"
+            class="form-control"
+            id="descripcion"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">PRECIO</label>
+          <input
+            type="text"
+            class="form-control"
+            id="precio"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label
+            for="exampleInputEmail1"
+            class="form-label fs-5"
+          >CATEGORIA</label>
+          <input
+            type="text"
+            class="form-control"
+            id="categoria"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">STOCK</label>
+          <input
+            type="text"
+            class="form-control"
+            id="stock"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">STATUS</label>
+          <input
+            type="text"
+            class="form-control"
+            id="status"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">IMAGEN</label>
+          <input
+            type="text"
+            class="form-control"
+            id="imagen"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">CÓDIGO</label>
+          <input
+            type="text"
+            class="form-control"
+            id="codigo"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary align-items-center"
+          id="enviar"
+          value="enviar"
+          name="enviar"
+        >CREAR</button>
+      </form>
+    </main>
     <div class="card-group d-flex">
-      <div class="row row-cols-3" id="producto">
+      <div
+        class="row row-cols-1 row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
+        id="producto"
+      >
         {{#each products}}
           <div class="card">
             <div class="text-center">
@@ -126,6 +119,13 @@
               <p class="card-text">estado: {{status}}</p>
               <p class="card-text">categoria: {{category}}</p>
               <p class="card-text">id: {{id}}</p>
+            </div>
+            <div id="inputDelete">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                value="{{this.id}}"
+              />ELIMINAR</button>
             </div>
           </div>
         {{/each}}

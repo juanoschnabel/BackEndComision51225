@@ -68,19 +68,11 @@ productRouter.post("/realtimeproducts", async (req, res) => {
   );
   let products = await productManager.getProducts();
   if (result === null) {
-    res.render("realTimeProducts", {
-      titulo: `real time products`,
-      products: products,
-    });
     socket.emit("mensaje", {
       titulo: `real time products`,
       products: products,
     });
   } else {
-    res.render("realTimeProducts", {
-      titulo: `real time products`,
-      products: products,
-    });
     socket.emit("mensaje", {
       titulo: result.title,
       descripcion: result.description,
@@ -126,6 +118,7 @@ productRouter.delete("/realtimeproducts", async (req, res) => {
   res.render("realTimeProducts", {
     titulo: `real time products`,
     products: mensaje,
+    mensaje: mensaje,
   });
 });
 export default productRouter;

@@ -134,7 +134,7 @@ export class ProductManager {
     try {
       await fs.writeFile(this.path, "");
       await fs.writeFile(this.path, JSON.stringify(prods));
-      console.log(`producto ${word} exitosamente`);
+      return `producto ${word} exitosamente`;
     } catch (error) {
       console.error(error);
     }
