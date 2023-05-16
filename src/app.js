@@ -7,9 +7,21 @@ import { engine } from "express-handlebars";
 import * as path from "path";
 import { Server } from "socket.io";
 import { ProductManager } from "./ProductManager.js";
-const productManager = new ProductManager("./info.txt");
+import mongoose from "mongoose";
+import { userModel } from "./models/user.js";
+import "dotenv/config";
+// const productManager = new ProductManager("./info.txt");
+const productManager = new ProductManager(
+  process.env.URL_MONGODB_ATLAS,
+  "mydatabase",
+  "products"
+);
 //CONFIGURACIONES
 const app = express();
+mongoose
+  .connect(process.env.URL_MONGODB_ATLAS)
+  .then(() => console.log("DB is connected"))
+  .catch((error) => console.log("Error en MongoDB Atlas :", error));
 const PORT = 8080;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

@@ -35,7 +35,7 @@ function eliminarProducto(id) {
 inputDeleteButtons.forEach((inputDeleteButton) => {
   inputDeleteButton.addEventListener("click", (e) => {
     e.preventDefault();
-    let id = Number(e.target.value);
+    let id = e.target.value;
     eliminarProducto(id);
   });
 });
@@ -117,16 +117,16 @@ const actualizarListaProductos = (arrayProductos) => {
         <p class="card-text">stock: ${producto.stock}</p>
         <p class="card-text">estado: ${producto.status}</p>
         <p class="card-text">categoria: ${producto.category}</p>
-        <p class="card-text">id: ${producto.id}</p>
+        <p class="card-text">id: ${producto._id}</p>
       </div>`;
     const deleteButtonContainer = document.createElement("div");
     deleteButtonContainer.id = "inputDelete";
     const deleteButton = document.createElement("button");
     deleteButton.className = "btn btn-primary";
-    deleteButton.value = producto.id;
+    deleteButton.value = producto._id;
     deleteButton.textContent = "ELIMINAR";
     deleteButton.addEventListener("click", (e) => {
-      let id = Number(e.target.value);
+      let id = e.target.value;
       eliminarProducto(id);
     });
     deleteButtonContainer.appendChild(deleteButton);
