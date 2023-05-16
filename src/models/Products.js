@@ -31,4 +31,4 @@ const productSchema = new Schema({
   thumbnail: [],
 });
 
-export default cartModel = model(productSchema, "products");
+export default productModel = model(productSchema, "products");

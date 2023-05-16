@@ -9,4 +9,4 @@ const messageSchema = new Schema({
     required: true,
   },
 });
-export default cartModel = model(messageSchema, "messages");
+export default messagesModel = model(messageSchema, "messages");

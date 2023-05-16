@@ -7,15 +7,28 @@ import { engine } from "express-handlebars";
 import * as path from "path";
 import { Server } from "socket.io";
 import { ProductManager } from "./ProductManager.js";
+import { MessagesManager } from "./MessagesManager.js";
 import mongoose from "mongoose";
 import { userModel } from "./models/user.js";
 import "dotenv/config";
+import { CartManager } from "./CartManager.js";
 // const productManager = new ProductManager("./info.txt");
 const productManager = new ProductManager(
   process.env.URL_MONGODB_ATLAS,
   "mydatabase",
   "products"
 );
+const cartManager = new CartManager(
+  process.env.URL_MONGODB_ATLAS,
+  "mydatabase",
+  "carts"
+);
+const messagesManager = new MessagesManager(
+  process.env.URL_MONGODB_ATLAS,
+  "mydatabase",
+  "messages"
+);
+
 //CONFIGURACIONES
 const app = express();
 mongoose
@@ -46,7 +59,11 @@ const upload = multer({ storage: storage });
 const io = new Server(server);
 io.on("connection", (socket) => {
   console.log("cliente conectado");
-
+  socket.on("nuevoMensaje", async ([data]) => {
+    const user = data.user;
+    const mensaje = data.message;
+    await messagesManager.addMessage(user, mensaje);
+  });
   socket.on("productoIngresado", async ([info]) => {
     const title = info.title;
     const description = info.description;
@@ -96,9 +113,11 @@ app.get("/", async (req, res) => {
     products: products,
   });
 });
-// app.get("/chat", (req, res) => {
-//   res.render("index");
-// });
+app.get("/chat", (req, res) => {
+  res.render("index", {
+    titulo: "chat",
+  });
+});
 app.get("/realtimeproducts", async (req, res) => {
   const getProducts = await productManager.getProducts();
   res.render("realTimeProducts", {

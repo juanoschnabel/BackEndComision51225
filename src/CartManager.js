@@ -1,5 +1,5 @@
+/*
 import { promises as fs } from "fs";
-
 export class CartManager {
   constructor(path) {
     this.path = path;
@@ -58,5 +58,35 @@ export class CartManager {
     carts[cartIndex] = carrito;
     await fs.writeFile(this.path, "");
     await fs.writeFile(this.path, JSON.stringify(carts));
+  }
+}
+*/
+import { MongoClient, ObjectId } from "mongodb";
+
+export class CartManager {
+  constructor(uri, dbName, collectionName) {
+    this.uri = uri;
+    this.dbName = dbName;
+    this.collectionName = collectionName;
+  }
+  async createCarrito() {
+    const carrito = new Carrito({
+      products: [],
+    });
+    await carrito.save();
+    return "Carrito creado";
+  }
+  async addProductCart(id, quantity, idCart) {
+    const carrito = await Carrito.findOneAndUpdate(
+      { _id: idCart, "products.id": id },
+      { $inc: { "products.$.quantity": quantity } },
+      { new: true }
+    );
+    if (!carrito) {
+      await Carrito.findOneAndUpdate(
+        { _id: idCart },
+        { $push: { products: { id, quantity } } }
+      );
+    }
   }
 }
