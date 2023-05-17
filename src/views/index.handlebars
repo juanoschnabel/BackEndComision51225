@@ -40,6 +40,22 @@
         >ENVIAR</button>
       </form>
     </main>
+    <div class="card-group d-flex">
+      <div
+        class="row row-cols-1 row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
+        id="producto"
+      >
+        {{#each messages}}
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">titulo: {{user}}</h5>
+              <p class="card-text">descripcion: {{message}}</p>
+            </div>
+          </div>
+        {{/each}}
+
+      </div>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
       integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="

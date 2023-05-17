@@ -9,7 +9,7 @@ import { Server } from "socket.io";
 import { ProductManager } from "./ProductManager.js";
 import { MessagesManager } from "./MessagesManager.js";
 import mongoose from "mongoose";
-import { userModel } from "./models/user.js";
+import { userModel } from "./models/Users.js";
 import "dotenv/config";
 import { CartManager } from "./CartManager.js";
 // const productManager = new ProductManager("./info.txt");
@@ -33,8 +33,11 @@ const messagesManager = new MessagesManager(
 const app = express();
 mongoose
   .connect(process.env.URL_MONGODB_ATLAS)
-  .then(() => console.log("DB is connected"))
+  .then(() => {
+    console.log("DB is connected");
+  })
   .catch((error) => console.log("Error en MongoDB Atlas :", error));
+
 const PORT = 8080;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -113,9 +116,11 @@ app.get("/", async (req, res) => {
     products: products,
   });
 });
-app.get("/chat", (req, res) => {
+app.get("/chat", async (req, res) => {
+  let messages = await messagesManager.getMessages();
   res.render("index", {
     titulo: "chat",
+    messages: messages,
   });
 });
 app.get("/realtimeproducts", async (req, res) => {

@@ -21,4 +21,11 @@ export class MessagesManager {
       console.error(error);
     }
   }
+  async getMessages() {
+    const client = await MongoClient.connect(this.uri);
+    const collection = client.db(this.dbName).collection(this.collectionName);
+    const messages = await collection.find().toArray();
+    client.close();
+    return messages;
+  }
 }
