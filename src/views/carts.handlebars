@@ -1,0 +1,81 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{titulo}}</title>
+  </head>
+  <body>
+    <header class="row justify-content-center">
+      <div class="mt-2 col-9 col-md-4 d-flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-primary d-flex justify-content-center"
+          id="createCart"
+          value="enviar"
+        >CREAR CARRITO</button>
+      </div>
+    </header>
+    <main class="row justify-content-center">
+      <H2 class="text-center mt-4 mb-2"> CARGAR EL CARRITO</H2>
+      <form class="mt-2 col-9 col-md-4 align-items-sm-center" id="formCarts">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">ID DEL CARRITO</label>
+          <input
+            type="text"
+            class="form-control"
+            id="idCart"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label fs-5">ID DEL
+            PRODUCTO</label>
+          <input
+            type="text"
+            class="form-control"
+            id="idProduct"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label
+            for="exampleInputEmail1"
+            class="form-label fs-5"
+          >CANTIDAD</label>
+          <input
+            type="text"
+            class="form-control"
+            id="quantity"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="d-flex justify-content-center">
+          <button
+            type="submit"
+            class="btn btn-primary d-flex justify-content-center"
+            id="enviar"
+            value="enviar"
+            name="enviar"
+          >ENVIAR</button>
+        </div>
+      </form>
+    </main>
+    <div>
+      {{#each carts}}
+      <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Id del carrito: {{_id}}</h5>
+              <p class="card-text">Productos ingresados: {{products}}</p>
+            </div>
+      {{/each}}
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
+      integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="js/carts.js"></script>
+  </body>
+</html>

@@ -62,6 +62,10 @@ const upload = multer({ storage: storage });
 const io = new Server(server);
 io.on("connection", (socket) => {
   console.log("cliente conectado");
+  socket.on("nuevoCarrito", async (data) => {
+    await cartManager.createCarrito(data);
+  });
+
   socket.on("nuevoMensaje", async ([data]) => {
     const user = data.user;
     const mensaje = data.message;
@@ -117,7 +121,7 @@ app.get("/", async (req, res) => {
   });
 });
 app.get("/chat", async (req, res) => {
-  let messages = await messagesManager.getMessages();
+  const messages = await messagesManager.getMessages();
   res.render("index", {
     titulo: "chat",
     messages: messages,
@@ -128,5 +132,12 @@ app.get("/realtimeproducts", async (req, res) => {
   res.render("realTimeProducts", {
     titulo: "real time products",
     products: getProducts,
+  });
+});
+app.get("/carts", async (req, res) => {
+  const carts = await cartManager.getCarts();
+  res.render("carts", {
+    titulo: "hola",
+    carts: carts,
   });
 });

@@ -69,12 +69,19 @@ export class CartManager {
     this.dbName = dbName;
     this.collectionName = collectionName;
   }
-  async createCarrito() {
-    const carrito = new Carrito({
-      products: [],
-    });
-    await carrito.save();
-    return "Carrito creado";
+  async getCarts() {
+    const client = await MongoClient.connect(this.uri);
+    const collection = client.db(this.dbName).collection(this.collectionName);
+    const carts = await collection.find().toArray();
+    client.close();
+    return carts;
+  }
+  async createCarrito(data) {
+    const client = await MongoClient.connect(this.uri);
+    const collection = client.db(this.dbName).collection(this.collectionName);
+    const newCart = { products: data };
+    await collection.insertOne(newCart);
+    client.close();
   }
   async addProductCart(id, quantity, idCart) {
     const carrito = await Carrito.findOneAndUpdate(
