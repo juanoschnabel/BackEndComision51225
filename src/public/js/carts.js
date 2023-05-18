@@ -28,17 +28,32 @@ createCartButton.addEventListener("click", (e) => {
 
 formCarts.addEventListener("submit", (e) => {
   e.preventDefault();
-  const parseQuantity = Number(quantity.value);
-  const nuewBuy = {
-    cartId: cartId.value,
-    products: [
-      {
-        idProduct: productId.value,
-        quantity: parseQuantity,
-      },
-    ],
-  };
-  console.log(nuewBuy);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 5000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+  Toast.fire({
+    icon: "success",
+    title: "Este formulario lo desarrollaremos para la proxima entrega!😜👀",
+  });
+  // const parseQuantity = Number(quantity.value);
+  // const nuewBuy = {
+  //   cartId: cartId.value,
+  //   products: [
+  //     {
+  //       idProduct: productId.value,
+  //       quantity: parseQuantity,
+  //     },
+  //   ],
+  // };
+  // console.log(nuewBuy);
 });
 socket.on("nuevosCarritos", (arrayCarritos) => {
   actualizarListaCarritos(arrayCarritos);

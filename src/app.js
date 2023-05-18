@@ -141,7 +141,7 @@ app.get("/realtimeproducts", async (req, res) => {
 app.get("/carts", async (req, res) => {
   const carts = await cartManager.getCarts();
   res.render("carts", {
-    titulo: "hola",
+    titulo: "carts",
     carts: carts,
   });
 });
