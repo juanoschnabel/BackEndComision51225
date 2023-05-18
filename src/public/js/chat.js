@@ -47,3 +47,22 @@ formMessages.addEventListener("submit", (e) => {
     });
   }
 });
+
+socket.on("nuevosMensajes", (arrayMensajes) => {
+  actualizarListaMensajes(arrayMensajes);
+});
+const actualizarListaMensajes = (arrayMensajes) => {
+  cards.innerHTML = "";
+  arrayMensajes.forEach((mensaje) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+    <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">USUARIO: ${mensaje.user}</h5>
+      <p class="card-text">MENSAJE: ${mensaje.message}</p>
+    </div>
+  </div>`;
+    cards.appendChild(card);
+  });
+};

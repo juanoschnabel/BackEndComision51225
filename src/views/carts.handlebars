@@ -61,14 +61,20 @@
         </div>
       </form>
     </main>
-    <div>
-      {{#each carts}}
-      <div class="card">
+    <div class="card-group d-flex">
+      <div
+        class="row row-cols-1 row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
+        id="cards"
+      >
+        {{#each carts}}
+          <div class="card">
             <div class="card-body">
               <h5 class="card-title">Id del carrito: {{_id}}</h5>
               <p class="card-text">Productos ingresados: {{products}}</p>
             </div>
-      {{/each}}
+          </div>
+        {{/each}}
+      </div>
     </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"

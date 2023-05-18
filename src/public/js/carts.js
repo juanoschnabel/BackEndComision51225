@@ -40,3 +40,19 @@ formCarts.addEventListener("submit", (e) => {
   };
   console.log(nuewBuy);
 });
+socket.on("nuevosCarritos", (arrayCarritos) => {
+  actualizarListaCarritos(arrayCarritos);
+});
+const actualizarListaCarritos = (arrayCarritos) => {
+  cards.innerHTML = "";
+  arrayCarritos.forEach((carrito) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+    <div class="card-body">
+    <h5 class="card-title">Id del carrito: ${carrito._id}</h5>
+    <p class="card-text">Productos ingresados: ${carrito.products}</p>
+  </div>`;
+    cards.appendChild(card);
+  });
+};

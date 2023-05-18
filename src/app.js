@@ -12,20 +12,20 @@ import mongoose from "mongoose";
 import { userModel } from "./models/Users.js";
 import "dotenv/config";
 import { CartManager } from "./CartManager.js";
-// const productManager = new ProductManager("./info.txt");
+
 const productManager = new ProductManager(
   process.env.URL_MONGODB_ATLAS,
-  "mydatabase",
+  "ecommerce",
   "products"
 );
 const cartManager = new CartManager(
   process.env.URL_MONGODB_ATLAS,
-  "mydatabase",
+  "ecommerce",
   "carts"
 );
 const messagesManager = new MessagesManager(
   process.env.URL_MONGODB_ATLAS,
-  "mydatabase",
+  "ecommerce",
   "messages"
 );
 
@@ -64,12 +64,16 @@ io.on("connection", (socket) => {
   console.log("cliente conectado");
   socket.on("nuevoCarrito", async (data) => {
     await cartManager.createCarrito(data);
+    const newCarts = await cartManager.getCarts();
+    io.emit("nuevosCarritos", newCarts);
   });
 
   socket.on("nuevoMensaje", async ([data]) => {
     const user = data.user;
     const mensaje = data.message;
     await messagesManager.addMessage(user, mensaje);
+    const newMessage = await messagesManager.getMessages();
+    io.emit("nuevosMensajes", newMessage);
   });
   socket.on("productoIngresado", async ([info]) => {
     const title = info.title;
@@ -122,7 +126,7 @@ app.get("/", async (req, res) => {
 });
 app.get("/chat", async (req, res) => {
   const messages = await messagesManager.getMessages();
-  res.render("index", {
+  res.render("chat", {
     titulo: "chat",
     messages: messages,
   });

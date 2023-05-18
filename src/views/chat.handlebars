@@ -43,13 +43,15 @@
     <div class="card-group d-flex">
       <div
         class="row row-cols-1 row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
-        id="producto"
+        id="cards"
       >
         {{#each messages}}
           <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">titulo: {{user}}</h5>
-              <p class="card-text">descripcion: {{message}}</p>
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">USUARIO: {{user}}</h5>
+                <p class="card-text">MENSAJE: {{message}}</p>
+              </div>
             </div>
           </div>
         {{/each}}
@@ -62,6 +64,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="js/index.js"></script>
+    <script src="js/chat.js"></script>
   </body>
 </html>

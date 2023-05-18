@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { ProductManager } from "../ProductManager.js";
-const productManager = new ProductManager("./info.txt");
+const productManager = new ProductManager(
+  process.env.URL_MONGODB_ATLAS,
+  "ecommerce",
+  "products"
+);
 const productRouter = Router();
 //API/PRODUCTS
 productRouter.get("/", async (req, res) => {
