@@ -34,41 +34,8 @@ export class ProductManager {
     category
   ) {
     try {
-      // if (!title || title === "") {
-      //   console.log('"Faltan datos de title"');
-      //   return "Faltan datos de title";
-      // }
-      // if (!description || description === "") {
-      //   console.log("Faltan datos de description");
-      //   return "Faltan datos de description";
-      // }
-      // if (!price || price === "") {
-      //   console.log("Faltan datos de price");
-      //   return "Faltan datos de price";
-      // }
-      // if (!code || code === "") {
-      //   console.log("Faltan datos de code");
-      //   return "Faltan datos de code";
-      // }
-      // if (!stock || stock === "") {
-      //   console.log("Faltan datos de stock");
-      //   return "Faltan datos de stock";
-      // }
-      // if (status === "") {
-      //   status = true;
-      // }
-      // if (!category || category === "") {
-      //   console.log("Faltan datos de category");
-      //   return "Faltan datos de category";
-      // }
-
       const client = await MongoClient.connect(this.uri);
       const collection = client.db(this.dbName).collection(this.collectionName);
-
-      // if (await collection.findOne({ code })) {
-      //   console.log("Ya existe un producto con este código");
-      //   return "Ya existe un producto con este código";
-      // } else {
       const product = {
         title,
         description,
@@ -82,7 +49,6 @@ export class ProductManager {
       await collection.insertOne(product);
       client.close();
       return null;
-      // }
     } catch (error) {
       console.error(error);
     }
