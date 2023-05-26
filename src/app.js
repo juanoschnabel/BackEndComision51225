@@ -6,28 +6,26 @@ import cartRouter from "./routes/cart.routes.js";
 import { engine } from "express-handlebars";
 import * as path from "path";
 import { Server } from "socket.io";
-import { ProductManager } from "./ProductManager.js";
-import { MessagesManager } from "./MessagesManager.js";
 import mongoose from "mongoose";
-import { userModel } from "./models/Users.js";
+import { productModel } from "./models/Products.js";
+import { cartModel } from "./models/Cart.js";
 import "dotenv/config";
-import { CartManager } from "./CartManager.js";
 
-const productManager = new ProductManager(
-  process.env.URL_MONGODB_ATLAS,
-  "ecommerce",
-  "products"
-);
-const cartManager = new CartManager(
-  process.env.URL_MONGODB_ATLAS,
-  "ecommerce",
-  "carts"
-);
-const messagesManager = new MessagesManager(
-  process.env.URL_MONGODB_ATLAS,
-  "ecommerce",
-  "messages"
-);
+// const ProductModel = new ProductManager(
+//   process.env.URL_MONGODB_ATLAS,
+//   "ecommerce",
+//   "products"
+// );
+// const cartManager = new CartManager(
+//   process.env.URL_MONGODB_ATLAS,
+//   "ecommerce",
+//   "carts"
+// );
+// const messagesManager = new MessagesManager(
+//   process.env.URL_MONGODB_ATLAS,
+//   "ecommerce",
+//   "messages"
+// );
 
 //CONFIGURACIONES
 const app = express();
@@ -37,6 +35,211 @@ mongoose
     console.log("DB is connected");
   })
   .catch((error) => console.log("Error en MongoDB Atlas :", error));
+// await cartModel.create([{}]);
+// await productModel.create([
+//   {
+//     title: "1",
+//     description: "1",
+//     code: "1",
+//     category: "123",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "2",
+//     description: "2",
+//     code: "2",
+//     category: "FASD",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "3",
+//     description: "3",
+//     code: "3",
+//     category: "Fadfsf",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "4",
+//     description: "4",
+//     code: "4",
+//     category: "Ffghfg",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "5",
+//     description: "5",
+//     code: "5",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "6",
+//     description: "6",
+//     code: "6",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "7",
+//     description: "7",
+//     code: "7",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "8",
+//     description: "8",
+//     code: "8",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "9",
+//     description: "9",
+//     code: "9",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "10",
+//     description: "10",
+//     code: "10",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "11",
+//     description: "11",
+//     code: "11",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "12",
+//     description: "12",
+//     code: "12",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "13",
+//     description: "13",
+//     code: "13",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "14",
+//     description: "14",
+//     code: "14",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "15",
+//     description: "15",
+//     code: "15",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "16",
+//     description: "16",
+//     code: "16",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "17",
+//     description: "17",
+//     code: "17",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "18",
+//     description: "18",
+//     code: "18",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "19",
+//     description: "19",
+//     code: "19",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+//   {
+//     title: "20",
+//     description: "20",
+//     code: "20",
+//     category: "F",
+//     price: 100,
+//     stock: 100,
+//     status: true,
+//     thumbnail: ["hola"],
+//   },
+// ]);
+// const response = await userModel.find().explain("executionStats");
+// console.log(response);
 
 const PORT = 8080;
 const storage = multer.diskStorage({
