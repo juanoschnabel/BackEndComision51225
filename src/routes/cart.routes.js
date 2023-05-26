@@ -71,8 +71,26 @@ cartRouter.put("/:cid/products/:pid", async (req, res) => {
   }
 });
 cartRouter.put("/:cid", async (req, res) => {
-  const product = await cartManager.getCartById(req.params.cid);
-  res.send(product);
+  const { cid } = req.params;
+  const { products } = req.body || {};
+  if (!products) {
+    return res.status(400).send({ message: "Producto no encontrado" });
+  }
+  const parsedProducts = products.map((product) => ({
+    id_prod: new mongoose.Types.ObjectId(product.id_prod),
+    quantity: product.quantity,
+  }));
+  const cart = await cartModel.findByIdAndUpdate(
+    cid,
+    { products: parsedProducts },
+    { new: true }
+  );
+  res.send(cart);
+});
+cartRouter.get("/:cid", async (req, res) => {
+  const { cid } = req.params;
+  const cart = await cartModel.findById(cid).populate("products.id_prod");
+  res.send(cart.products);
 });
 
 export default cartRouter;

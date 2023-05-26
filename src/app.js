@@ -11,22 +11,6 @@ import { productModel } from "./models/Products.js";
 import { cartModel } from "./models/Cart.js";
 import "dotenv/config";
 
-// const ProductModel = new ProductManager(
-//   process.env.URL_MONGODB_ATLAS,
-//   "ecommerce",
-//   "products"
-// );
-// const cartManager = new CartManager(
-//   process.env.URL_MONGODB_ATLAS,
-//   "ecommerce",
-//   "carts"
-// );
-// const messagesManager = new MessagesManager(
-//   process.env.URL_MONGODB_ATLAS,
-//   "ecommerce",
-//   "messages"
-// );
-
 //CONFIGURACIONES
 const app = express();
 mongoose
@@ -238,9 +222,6 @@ mongoose
 //     thumbnail: ["hola"],
 //   },
 // ]);
-// const response = await userModel.find().explain("executionStats");
-// console.log(response);
-
 const PORT = 8080;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -262,52 +243,52 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const upload = multer({ storage: storage });
 //ServerIO
-const io = new Server(server);
-io.on("connection", (socket) => {
-  console.log("cliente conectado");
-  socket.on("nuevoCarrito", async (data) => {
-    await cartManager.createCarrito(data);
-    const newCarts = await cartManager.getCarts();
-    io.emit("nuevosCarritos", newCarts);
-  });
+// const io = new Server(server);
+// io.on("connection", (socket) => {
+//   console.log("cliente conectado");
+//   socket.on("nuevoCarrito", async (data) => {
+//     await cartManager.createCarrito(data);
+//     const newCarts = await cartManager.getCarts();
+//     io.emit("nuevosCarritos", newCarts);
+//   });
 
-  socket.on("nuevoMensaje", async ([data]) => {
-    const user = data.user;
-    const mensaje = data.message;
-    await messagesManager.addMessage(user, mensaje);
-    const newMessage = await messagesManager.getMessages();
-    io.emit("nuevosMensajes", newMessage);
-  });
-  socket.on("productoIngresado", async ([info]) => {
-    const title = info.title;
-    const description = info.description;
-    const price = info.price;
-    const thumbnail = info.thumbnail;
-    const code = info.code;
-    const status = info.status;
-    const stock = info.stock;
-    const category = info.category;
-    await productManager.addProduct(
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      status,
-      stock,
-      category
-    );
-    const newProducts = await productManager.getProducts();
+//   socket.on("nuevoMensaje", async ([data]) => {
+//     const user = data.user;
+//     const mensaje = data.message;
+//     await messagesManager.addMessage(user, mensaje);
+//     const newMessage = await messagesManager.getMessages();
+//     io.emit("nuevosMensajes", newMessage);
+//   });
+//   socket.on("productoIngresado", async ([info]) => {
+//     const title = info.title;
+//     const description = info.description;
+//     const price = info.price;
+//     const thumbnail = info.thumbnail;
+//     const code = info.code;
+//     const status = info.status;
+//     const stock = info.stock;
+//     const category = info.category;
+//     await productManager.addProduct(
+//       title,
+//       description,
+//       price,
+//       thumbnail,
+//       code,
+//       status,
+//       stock,
+//       category
+//     );
+//     const newProducts = await productManager.getProducts();
 
-    io.emit("nuevosproductos", newProducts);
-  });
+//     io.emit("nuevosproductos", newProducts);
+//   });
 
-  socket.on("productoEliminado", async (id) => {
-    await productManager.deleteProduct(id);
-    const newProducts = await productManager.getProducts();
-    io.emit("nuevosproductos", newProducts);
-  });
-});
+//   socket.on("productoEliminado", async (id) => {
+//     await productManager.deleteProduct(id);
+//     const newProducts = await productManager.getProducts();
+//     io.emit("nuevosproductos", newProducts);
+//   });
+// });
 
 //ROUTES
 app.use("/api/products", productRouter);
@@ -320,31 +301,31 @@ app.post("/upload", upload.single("product"), (req, res) => {
   res.send("imagen subida");
 });
 //HBS
-app.get("/", async (req, res) => {
-  let products = await productManager.getProducts();
-  res.render("home", {
-    titulo: "HOME - TODOS LOS PRODUCTOS",
-    products: products,
-  });
-});
-app.get("/chat", async (req, res) => {
-  const messages = await messagesManager.getMessages();
-  res.render("chat", {
-    titulo: "chat",
-    messages: messages,
-  });
-});
-app.get("/realtimeproducts", async (req, res) => {
-  const getProducts = await productManager.getProducts();
-  res.render("realTimeProducts", {
-    titulo: "real time products",
-    products: getProducts,
-  });
-});
-app.get("/carts", async (req, res) => {
-  const carts = await cartManager.getCarts();
-  res.render("carts", {
-    titulo: "carts",
-    carts: carts,
-  });
-});
+// app.get("/", async (req, res) => {
+//   let products = await productManager.getProducts();
+//   res.render("home", {
+//     titulo: "HOME - TODOS LOS PRODUCTOS",
+//     products: products,
+//   });
+// });
+// app.get("/chat", async (req, res) => {
+//   const messages = await messagesManager.getMessages();
+//   res.render("chat", {
+//     titulo: "chat",
+//     messages: messages,
+//   });
+// });
+// app.get("/realtimeproducts", async (req, res) => {
+//   const getProducts = await productManager.getProducts();
+//   res.render("realTimeProducts", {
+//     titulo: "real time products",
+//     products: getProducts,
+//   });
+// });
+// app.get("/carts", async (req, res) => {
+//   const carts = await cartManager.getCarts();
+//   res.render("carts", {
+//     titulo: "carts",
+//     carts: carts,
+//   });
+// });
