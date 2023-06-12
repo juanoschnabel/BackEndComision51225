@@ -1,8 +1,11 @@
 import { Router } from "express";
 import { productModel } from "../models/Products.js";
 
+// const auth = (req, res, next) => {
+//   if (req.session.user) return next();
+//   return res.send("Error de autenticación");
+// };
 const productRouter = Router();
-
 productRouter.get("/", async (req, res) => {
   const { limit = 10, page = 1, sort = "" } = req.query;
 

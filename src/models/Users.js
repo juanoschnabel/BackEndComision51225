@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 const userSchema = new Schema({
   first_name: {
     type: String,
@@ -17,9 +18,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
+  password: {
+    type: String,
+    required: true,
+  },
 });
-export const userModel = model("users", userSchema);
+mongoose.set("strictQuery", false);
+export const userModel = mongoose.model("users", userSchema);
