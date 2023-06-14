@@ -18,6 +18,7 @@ import MongoStore from "connect-mongo";
 import sessionRouter from "./routes/session.router.js";
 
 //CONFIGURACIONES
+const fileStore = FileStore(session);
 const app = express();
 mongoose
   .connect(process.env.URL_MONGODB_ATLAS, {
@@ -38,8 +39,8 @@ const storage = multer.diskStorage({
   },
 });
 app.engine("handlebars", engine());
-app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
+app.set("view engine", "handlebars");
 //PUERTO
 const server = app.listen(PORT, () => {
   console.log(`Server on port ${PORT}`);
@@ -48,22 +49,21 @@ const server = app.listen(PORT, () => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const upload = multer({ storage: storage });
-// app.use(cookieParser("coderhouse"));
+app.use(cookieParser());
 //ServerIO
 
-//ROUTES
-app.use("/sessions", sessionRouter);
-app.use("/api/products", productRouter);
-app.use("/api/cart", cartRouter);
-app.use("/", express.static(__dirname + "/public"));
-app.post("/upload", upload.single("product"), (req, res) => {
-  //IMAGENES
-  console.log(req.body);
-  console.log(req.file);
-  res.send("imagen subida");
-});
 //HBS
 
+// app.use(
+//   session({
+//     store: new fileStore({
+//       path: process.env.URL_MONGODB_ATLAS,
+//     }),
+//     secret: "mysecret",
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
 app.use(
   session({
     store: MongoStore.create({
@@ -76,7 +76,19 @@ app.use(
       // },
     }),
     secret: "mysecret",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
   })
 );
+
+//ROUTES
+app.use("/sessions", sessionRouter);
+app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter);
+app.use("/", express.static(__dirname + "/public"));
+app.post("/upload", upload.single("product"), (req, res) => {
+  //IMAGENES
+  console.log(req.body);
+  console.log(req.file);
+  res.send("imagen subida");
+});
