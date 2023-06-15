@@ -1,11 +1,45 @@
 import { Router } from "express";
 import { productModel } from "../models/Products.js";
 
+const productRouter = Router();
 const auth = (req, res, next) => {
   if (req.session.user) return next();
   return res.send("Error de autenticación");
 };
-const productRouter = Router();
+productRouter.get("/", auth, async (req, res) => {
+  const getProducts = await productModel.find();
+  const products = getProducts.map(
+    ({
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock,
+      status,
+    }) => ({
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock,
+      status,
+    })
+  );
+  const user = req.session.user;
+  const isAdmin = user.isAdmin;
+  res.render("home", {
+    titulo: "HOME - TODOS LOS PRODUCTOS",
+    products: products,
+    user: user,
+    isAdmin: isAdmin,
+  });
+});
+export default productRouter;
+
 // productRouter.get("/", auth, async (req, res) => {
 //   const { limit = 10, page = 1, sort = "" } = req.query;
 
@@ -73,34 +107,3 @@ const productRouter = Router();
 //     res.status(500).json(report);
 //   }
 // });
-
-productRouter.get("/", auth, async (req, res) => {
-  const getProducts = await productModel.find();
-  const products = getProducts.map(
-    ({
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      category,
-      stock,
-      status,
-    }) => ({
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      category,
-      stock,
-      status,
-    })
-  );
-  res.render("home", {
-    titulo: "HOME - TODOS LOS PRODUCTOS",
-    products: products,
-  });
-});
-
-export default productRouter;

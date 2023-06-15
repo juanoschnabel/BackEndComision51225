@@ -16,6 +16,8 @@ import session from "express-session";
 import FileStore from "session-file-store";
 import MongoStore from "connect-mongo";
 import sessionRouter from "./routes/session.router.js";
+import { userModel } from "./models/Users.js";
+import { constrainedMemory } from "process";
 
 //CONFIGURACIONES
 const fileStore = FileStore(session);
@@ -53,27 +55,12 @@ app.use(cookieParser());
 //ServerIO
 
 //HBS
-
-// app.use(
-//   session({
-//     store: new fileStore({
-//       path: process.env.URL_MONGODB_ATLAS,
-//     }),
-//     secret: "mysecret",
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
 app.use(
   session({
     store: MongoStore.create({
       mongoUrl: process.env.URL_MONGODB_ATLAS,
       dbName: "ecommerce",
       collectionName: "cookies",
-      // mongoOptions: {
-      //   useNewUrlParser: true,
-      //   useUnifiedTopology: true,
-      // },
     }),
     secret: "mysecret",
     resave: false,
@@ -91,4 +78,7 @@ app.post("/upload", upload.single("product"), (req, res) => {
   console.log(req.body);
   console.log(req.file);
   res.send("imagen subida");
+});
+app.get("/", async (req, res) => {
+  res.render("sessions/login");
 });

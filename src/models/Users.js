@@ -13,14 +13,20 @@ const userSchema = new Schema({
     type: String,
     unique: true,
     index: true,
-  },
-  gender: {
-    type: String,
     required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+    default: 0,
   },
   password: {
     type: String,
     required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
 });
 mongoose.set("strictQuery", false);

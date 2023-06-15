@@ -6,10 +6,15 @@ sessionRouter.get("/register", (req, res) => {
   res.render("sessions/register");
 });
 sessionRouter.post("/register", async (req, res) => {
-  const userNew = req.body;
-  const user = new userModel(userNew);
-  await user.save();
-  res.redirect("/sessions/login");
+  try {
+    const userNew = req.body;
+    const user = new userModel(userNew);
+    await user.save();
+    res.redirect("/sessions/login");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Email registrado. Ingrese uno nuevo");
+  }
 });
 //Vista de login
 sessionRouter.get("/login", (req, res) => {
