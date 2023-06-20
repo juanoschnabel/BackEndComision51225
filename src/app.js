@@ -17,8 +17,8 @@ import FileStore from "session-file-store";
 import MongoStore from "connect-mongo";
 import sessionRouter from "./routes/session.router.js";
 import { userModel } from "./models/Users.js";
-import { constrainedMemory } from "process";
-
+import passport from "passport";
+import "./passportStrategies.js";
 //CONFIGURACIONES
 const fileStore = FileStore(session);
 const app = express();
@@ -68,6 +68,9 @@ app.use(
   })
 );
 
+//PASPORT
+app.use(passport.initialize());
+app.use(passport.session());
 //ROUTES
 app.use("/sessions", sessionRouter);
 app.use("/api/products", productRouter);

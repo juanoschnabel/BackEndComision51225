@@ -9,15 +9,15 @@
     <h1>Registrar Usuarios</h1>
     <form action="/sessions/register" method="post">
       Nombre:
-      <input type="text" name="first_name" /><br />
+      <input type="text" name="first_name" required /><br />
       Apellido:
-      <input type="text" name="last_name" /><br />
+      <input type="text" name="last_name" required /><br />
       email:
-      <input type="text" name="email" /><br />
+      <input type="text" name="email" required /><br />
       Edad:
-      <input type="number" name="age" /><br />
+      <input type="number" name="age" required /><br />
       password:
-      <input type="text" name="password" /><br />
+      <input type="text" name="password" required /><br />
       <input type="submit" value="Crear" />
     </form>
   </body>

@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { userModel } from "../models/Users.js";
+import { hashData, compareData } from "../utils/bcrypt.js";
+import passport from "passport";
 const sessionRouter = Router();
 //vista para registrar usuarios
 sessionRouter.get("/register", (req, res) => {
@@ -7,7 +9,9 @@ sessionRouter.get("/register", (req, res) => {
 });
 sessionRouter.post("/register", async (req, res) => {
   try {
-    const userNew = req.body;
+    const register = req.body;
+    const hashPassword = await hashData(register.password);
+    const userNew = { ...req.body, password: hashPassword };
     const user = new userModel(userNew);
     await user.save();
     res.redirect("/sessions/login");
@@ -20,17 +24,31 @@ sessionRouter.post("/register", async (req, res) => {
 sessionRouter.get("/login", (req, res) => {
   res.render("sessions/login");
 });
-sessionRouter.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userModel.findOne({ email, password }).lean().exec();
-  if (!user) {
-    return res.status(401).render("errors/base", {
-      error: "Error en mail y/o contraseña",
-    });
-  }
-  req.session.user = user;
-  res.redirect("/api/products");
-});
+//Login sin passport
+// sessionRouter.post("/login", async (req, res) => {
+//   const { email, password } = req.body;
+//   const user = await userModel.findOne({ email }).lean().exec();
+//   if (!user) {
+//     return res.status(401).render("errors/base", {
+//       error: "Error en mail y/o contraseña",
+//     });
+//   }
+//   const isPasswordValid = await compareData(password, user.password);
+//   if (!isPasswordValid) {
+//     return res.status(400).json({ message: "Email o contraseña incorrectas" });
+//   }
+//   req.session.user = user;
+//   res.redirect("/api/products");
+// });
+//login con passport
+
+sessionRouter.post(
+  "/login",
+  passport.authenticate("login", {
+    failureRedirect: "/api/products/errorLogin",
+    successRedirect: "/api/products",
+  })
+);
 sessionRouter.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err)

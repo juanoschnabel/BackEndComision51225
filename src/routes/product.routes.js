@@ -1,12 +1,16 @@
 import { Router } from "express";
 import { productModel } from "../models/Products.js";
-
+import { userModel } from "../models/Users.js";
 const productRouter = Router();
-const auth = (req, res, next) => {
-  if (req.session.user) return next();
-  return res.send("Error de autenticación");
-};
-productRouter.get("/", auth, async (req, res) => {
+// const auth = (req, res, next) => {
+//   if (req.session.user) return next();
+//   return res.send("Error de autenticación");
+// };
+productRouter.get("/errorLogin", (req, res) => {
+  res.render("errorLogin");
+});
+productRouter.get("/", async (req, res) => {
+  const user = req.user;
   const getProducts = await productModel.find();
   const products = getProducts.map(
     ({
@@ -29,13 +33,15 @@ productRouter.get("/", auth, async (req, res) => {
       status,
     })
   );
-  const user = req.session.user;
-  const isAdmin = user.isAdmin;
+  const profile = {
+    first_name: user.first_name,
+    last_name: user.last_name,
+  };
   res.render("home", {
     titulo: "HOME - TODOS LOS PRODUCTOS",
     products: products,
-    user: user,
-    isAdmin: isAdmin,
+    user: profile,
+    isAdmin: user.isAdmin,
   });
 });
 export default productRouter;
