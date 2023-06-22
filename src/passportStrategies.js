@@ -55,20 +55,36 @@ passport.use(
       callbackURL: "http://localhost:8080/sessions/github",
     },
     async (accesToken, refreshToken, profile, done) => {
-      const { name, email } = profile._json;
+      const { name, email, id } = profile._json;
       try {
-        const userBD = await userModel.findOne({ email });
-        if (userBD) {
-          return done(null, userBD);
+        if (email === null) {
+          const user = {
+            first_name: "nombre no registrado",
+            last_name: "apellido no registrado",
+            email: id.toString(),
+            password: "1234",
+          };
+          const userBD = await userModel.findOne({ email: id.toString() });
+          if (userBD) {
+            return done(null, userBD);
+          } else {
+            const newUserDB = await userModel.create(user);
+            done(null, newUserDB);
+          }
+        } else {
+          const userBD = await userModel.findOne({ email });
+          if (userBD) {
+            return done(null, userBD);
+          }
+          const user = {
+            first_name: name.split(" ")[0],
+            last_name: name.split(" ")[1] || "",
+            email: email,
+            password: " ",
+          };
+          const newUserDB = await userModel.create(user);
+          done(null, newUserDB);
         }
-        const user = {
-          first_name: name.split(" ")[0],
-          last_name: name.split(" ")[1] || "",
-          email: email,
-          password: " ",
-        };
-        const newUserDB = await userModel.create(user);
-        done(null, newUserDB);
       } catch (error) {
         done(error);
       }
