@@ -19,6 +19,21 @@ cartRouter.get("/", async (req, res) => {
   });
 });
 cartRouter.post("/", async (req, res) => {
+  async function cartList(type, title) {
+    const carts = await cartModel.find();
+    const cartList = carts.map(({ _id, products }) => ({
+      id: _id,
+      products: products,
+      alertMessage: true,
+    }));
+    res.render("carts", {
+      titulo: "Gestionar Carritos",
+      carts: cartList,
+      alertMessage: true,
+      type: type,
+      title: title,
+    });
+  }
   try {
     const buscarCarrito = await cartModel.findOne({ _id: req.body.idCart });
     const buscarProducto = await productModel.findOne({
@@ -27,11 +42,11 @@ cartRouter.post("/", async (req, res) => {
     if (req.body.crear) {
       const createCart = new cartModel();
       await createCart.save();
-      res.redirect("/api/cart");
+      cartList("success", "CARRITO CREADO EXITOSAMENTE");
     } else if (req.body.borrar) {
       const cartId = req.body.borrar;
       await cartModel.deleteOne({ _id: cartId });
-      res.redirect("/api/cart");
+      cartList("success", "CARRITO ELIMINADO EXITOSAMENTE");
     } else if (buscarCarrito && buscarProducto) {
       const updateCart = {
         products: [
@@ -45,19 +60,13 @@ cartRouter.post("/", async (req, res) => {
         { _id: req.body.idCart },
         { $push: { products: updateCart.products[0] } }
       );
-      res.redirect("/api/cart");
+      cartList("success", "PRODUCTO AGREGADO AL CARRITO EXITOSAMENTE!");
     }
   } catch (error) {
-    const carts = await cartModel.find();
-    const cartList = carts.map(({ _id, products }) => ({
-      id: _id,
-      products: products,
-    }));
-    res.render("carts", {
-      titulo: "Gestionar Carritos",
-      alertMessage: true,
-      carts: cartList,
-    });
+    cartList(
+      "error",
+      "Ocurrió un problema en la carga del carrito. Ingrese un Id de carrito y de productos válidos"
+    );
     return error;
   }
 });

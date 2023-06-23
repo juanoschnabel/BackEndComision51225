@@ -75,34 +75,72 @@ productRouter.get("/realtimeproducts", async (req, res) => {
   });
 });
 productRouter.post("/realtimeproducts", async (req, res) => {
-  if (req.body.borrar) {
-    const productId = req.body.borrar;
-    await productModel.deleteOne({ _id: productId });
-    res.redirect("/api/products/realtimeproducts");
-  } else {
-    const {
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      category,
-      stock,
-      status,
-    } = req.body;
-    const newProduct = {
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      category,
-      stock,
-      status,
-    };
-    const product = new productModel(newProduct);
-    await product.save();
-    res.redirect("/api/products/realtimeproducts");
+  async function productList(type, title) {
+    const getProducts = await productModel.find();
+    const products = getProducts.map(
+      ({
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        category,
+        stock,
+        status,
+        _id,
+      }) => ({
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        category,
+        stock,
+        status,
+        _id,
+      })
+    );
+    res.render("realTimeProducts", {
+      titulo: "GESTIÓN DE PRODUCTOS",
+      products: products,
+      alertMessage: true,
+      type: type,
+      title: title,
+    });
+  }
+  try {
+    if (req.body.borrar) {
+      const productId = req.body.borrar;
+      await productModel.deleteOne({ _id: productId });
+      productList("success", "PRODUCTO ELIMINADO EXITOSAMENTE");
+    } else {
+      const {
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        category,
+        stock,
+        status,
+      } = req.body;
+      const newProduct = {
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        category,
+        stock,
+        status,
+      };
+      const product = new productModel(newProduct);
+      await product.save();
+      productList("success", "PRODUCTO CREADO EXITOSAMENTE");
+    }
+  } catch (error) {
+    productList("error", "OCURRIO UN ERROR! INTENTE NUEVAMENTE");
+    return error;
   }
 });
 

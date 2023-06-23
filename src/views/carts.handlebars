@@ -18,9 +18,7 @@
         showConfirmButton: false, timer: 5000, timerProgressBar: true, didOpen:
         (toast) => { toast.addEventListener("mouseenter", Swal.stopTimer);
         toast.addEventListener("mouseleave", Swal.resumeTimer); }, });
-        Toast.fire({ icon: "error", title: "ERROR", text:`Ocurrió un problema en
-        la carga del carrito. Ingrese un Id de carrito y de productos válidos`
-        });
+        Toast.fire({ icon: '{{type}}', title: '{{title}}' });
       </script>
     {{/if}}
     <header class="row justify-content-center">
