@@ -54,22 +54,26 @@ passport.use(
       clientSecret: "08bebfd2768b8f601ab8e2f3b0c983976a429224",
       callbackURL: "http://localhost:8080/sessions/github",
     },
+
     async (accesToken, refreshToken, profile, done) => {
-      const { name, email, id } = profile._json;
+      const { name, email, id, login } = profile._json;
+      async function createUser(user) {
+        const newUserDB = await userModel.create(user);
+        done(null, newUserDB);
+      }
       try {
         if (email === null) {
-          const user = {
-            first_name: "nombre no registrado",
-            last_name: "apellido no registrado",
-            email: id.toString(),
-            password: "1234",
-          };
           const userBD = await userModel.findOne({ email: id.toString() });
           if (userBD) {
             return done(null, userBD);
           } else {
-            const newUserDB = await userModel.create(user);
-            done(null, newUserDB);
+            const user = {
+              first_name: "@" + login,
+              last_name: " ",
+              email: id.toString(),
+              password: "1234",
+            };
+            createUser(user);
           }
         } else {
           const userBD = await userModel.findOne({ email });
@@ -77,13 +81,12 @@ passport.use(
             return done(null, userBD);
           }
           const user = {
-            first_name: name.split(" ")[0],
-            last_name: name.split(" ")[1] || "",
+            first_name: name.split(" ")[0] || login,
+            last_name: name.split(" ")[1] || " ",
             email: email,
-            password: " ",
+            password: "1234",
           };
-          const newUserDB = await userModel.create(user);
-          done(null, newUserDB);
+          createUser(user);
         }
       } catch (error) {
         done(error);

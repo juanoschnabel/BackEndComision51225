@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { productModel } from "../models/Products.js";
-import { userModel } from "../models/Users.js";
+// import { userModel } from "../models/Users.js";
 const productRouter = Router();
 // const auth = (req, res, next) => {
 //   if (req.session.user) return next();
