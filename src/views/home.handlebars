@@ -2,6 +2,9 @@
 <h2> Hola {{user.first_name}} {{user.last_name}}</h2>
 {{#if isAdmin}}
   <h4>Rol: Administrador</h4>
+  <button onclick="location.href='/api/products/realtimeproducts'">GESTIONAR
+    PRODUCTOS</button>
+  <button onclick="location.href='/api/cart'">GESTIONAR CARRITOS</button>
 {{else}}
   <h4>Rol: Usuario</h4>
 {{/if}}
@@ -12,13 +15,13 @@
   >
     {{#each products}}
       <div class="card">
-        {{!-- <div class="text-center">
+        <div class="text-center">
           <source srcset="..." type="image/svg+xml" />
           <img
             src="{{this.thumbnail}}"
             class="img-fluid img-thumbnail"
             alt="Imagen del producto"
-          /></div> --}}
+          /></div>
         <div class="card-body">
           <h5 class="card-title">titulo: {{this.title}}</h5>
           <p class="card-text">descripcion: {{description}}</p>
@@ -27,6 +30,7 @@
           <p class="card-text">stock: {{stock}}</p>
           <p class="card-text">estado: {{status}}</p>
           <p class="card-text">categoria: {{category}}</p>
+          <p class="card-text">ID: {{_id}}</p>
         </div>
       </div>
     {{/each}}

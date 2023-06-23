@@ -7,15 +7,23 @@
   </head>
 
   <body>
+    <button onclick="location.href='/api/products'">VOLVER</button>
     <main class="row justify-content-center">
-      <form class="mt-2 col-9 col-md-4 align-items-sm-center" id="form">
+      <form
+        class="mt-2 col-9 col-md-4 align-items-sm-center"
+        id="form"
+        action="/api/products/realtimeproducts"
+        method="post"
+      >
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label fs-5">TITULO</label>
           <input
             type="text"
             class="form-control"
             id="titulo"
+            name="title"
             aria-describedby="emailHelp"
+            required
           />
         </div>
         <div class="mb-3">
@@ -27,16 +35,20 @@
             type="text"
             class="form-control"
             id="descripcion"
+            name="description"
             aria-describedby="emailHelp"
+            required
           />
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label fs-5">PRECIO</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
             id="precio"
+            name="price"
             aria-describedby="emailHelp"
+            required
           />
         </div>
         <div class="mb-3">
@@ -48,24 +60,29 @@
             type="text"
             class="form-control"
             id="categoria"
+            name="category"
             aria-describedby="emailHelp"
+            required
           />
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label fs-5">STOCK</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
             id="stock"
+            name="stock"
             aria-describedby="emailHelp"
+            required
           />
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label fs-5">STATUS</label>
           <input
-            type="text"
+            type="boolean"
             class="form-control"
             id="status"
+            name="status"
             aria-describedby="emailHelp"
           />
         </div>
@@ -75,25 +92,27 @@
             type="text"
             class="form-control"
             id="imagen"
+            name="thumbnail"
             aria-describedby="emailHelp"
+            required
           />
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label fs-5">CÓDIGO</label>
           <input
             type="text"
+            name="code"
             class="form-control"
             id="codigo"
             aria-describedby="emailHelp"
+            required
           />
         </div>
-        <button
+        <input
           type="submit"
           class="btn btn-primary align-items-center"
-          id="enviar"
-          value="enviar"
-          name="enviar"
-        >CREAR</button>
+          value="Crear"
+        />
       </form>
     </main>
     <div class="card-group d-flex">
@@ -109,7 +128,8 @@
                 src="{{this.thumbnail}}"
                 class="img-fluid img-thumbnail"
                 alt="Imagen del producto"
-              /></div>
+              />
+            </div>
             <div class="card-body">
               <h5 class="card-title">titulo: {{title}}</h5>
               <p class="card-text">descripcion: {{description}}</p>
@@ -118,18 +138,23 @@
               <p class="card-text">stock: {{stock}}</p>
               <p class="card-text">estado: {{status}}</p>
               <p class="card-text">categoria: {{category}}</p>
-              <p class="card-text">id: {{_id}}</p>
+              <p class="card-text">ID: {{_id}}</p>
+
             </div>
             <div id="inputDelete">
-              <button
-                class="btn btn-primary"
-                type="submit"
-                value="{{this._id}}"
-              />ELIMINAR</button>
+              <form action="/api/products/realtimeproducts" method="post">
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  name="borrar"
+                  value="{{this._id}}"
+                >ELIMINAR</button>
+              </form>
             </div>
           </div>
         {{/each}}
       </div>
     </div>
+
   </body>
 </html>

@@ -1,3 +1,4 @@
+/*
 const socket = io();
 const title = document.getElementById("titulo");
 const description = document.getElementById("descripcion");
@@ -134,3 +135,4 @@ const actualizarListaProductos = (arrayProductos) => {
     cards.appendChild(card);
   });
 };
+*/

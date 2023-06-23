@@ -1,3 +1,4 @@
+/*
 const socket = io();
 const createCartButton = document.getElementById("createCart");
 const cartId = document.getElementById("idCart");
@@ -71,3 +72,4 @@ const actualizarListaCarritos = (arrayCarritos) => {
     cards.appendChild(card);
   });
 };
+*/

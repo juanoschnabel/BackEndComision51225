@@ -1,14 +1,11 @@
 import { Router } from "express";
 import { productModel } from "../models/Products.js";
-// import { userModel } from "../models/Users.js";
 const productRouter = Router();
-// const auth = (req, res, next) => {
-//   if (req.session.user) return next();
-//   return res.send("Error de autenticación");
-// };
+
 productRouter.get("/errorLogin", (req, res) => {
   res.render("errorLogin");
 });
+
 productRouter.get("/", async (req, res) => {
   const user = req.user;
   const getProducts = await productModel.find();
@@ -22,6 +19,7 @@ productRouter.get("/", async (req, res) => {
       category,
       stock,
       status,
+      _id,
     }) => ({
       title,
       description,
@@ -31,6 +29,7 @@ productRouter.get("/", async (req, res) => {
       category,
       stock,
       status,
+      _id,
     })
   );
   const profile = {
@@ -44,6 +43,69 @@ productRouter.get("/", async (req, res) => {
     isAdmin: user.isAdmin,
   });
 });
+productRouter.get("/realtimeproducts", async (req, res) => {
+  const getProducts = await productModel.find();
+  const products = getProducts.map(
+    ({
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock,
+      status,
+      _id,
+    }) => ({
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock,
+      status,
+      _id,
+    })
+  );
+
+  res.render("realTimeProducts", {
+    titulo: "GESTIÓN DE PRODUCTOS GET",
+    products: products,
+  });
+});
+productRouter.post("/realtimeproducts", async (req, res) => {
+  if (req.body.borrar) {
+    const productId = req.body.borrar;
+    await productModel.deleteOne({ _id: productId });
+    res.redirect("/api/products/realtimeproducts");
+  } else {
+    const {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock,
+      status,
+    } = req.body;
+    const newProduct = {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock,
+      status,
+    };
+    const product = new productModel(newProduct);
+    await product.save();
+    res.redirect("/api/products/realtimeproducts");
+  }
+});
+
 export default productRouter;
 
 // productRouter.get("/", auth, async (req, res) => {
