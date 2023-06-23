@@ -55,8 +55,7 @@ cartRouter.post("/", async (req, res) => {
     }));
     res.render("carts", {
       titulo: "Gestionar Carritos",
-      alertMessage:
-        "Ocurrió un problema en la carga del carrito. Ingrese un Id de carrito y de productos válidos",
+      alertMessage: true,
       carts: cartList,
     });
     return error;
