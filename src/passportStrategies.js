@@ -67,11 +67,12 @@ passport.use(
           if (userBD) {
             return done(null, userBD);
           } else {
+            const hashPassword = await hashData("1234");
             const user = {
               first_name: "@" + login,
               last_name: " ",
               email: id.toString(),
-              password: "1234",
+              password: hashPassword,
             };
             createUser(user);
           }
