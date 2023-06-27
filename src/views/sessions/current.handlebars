@@ -1,0 +1,19 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{titulo}}</title>
+  </head>
+  <body>
+    <div>
+      <h1>Bienvenidos {{name}} {{lastName}}</h1>
+      <h2>Tu información registrada</h2>
+      <p>Email: {{email}}</p>
+      <p>Edad: {{age}} años</p>
+      <p>Rol: {{rol}}</p>
+      <p>Id de tu carrito: {{cart}}</p>
+    </div>
+    <button onclick="location.href='/api/products'">IR A VER LOS PRODUCTOS</button>
+    <button onclick="location.href='/sessions/logout'">LOGOUT</button>
+  </body>
+</html>

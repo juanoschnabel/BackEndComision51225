@@ -24,10 +24,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  isAdmin: {
-    type: Boolean,
-    default: false,
+  role: {
+    type: String,
+    default: "user",
+  },
+  cart: {
+    type: Schema.Types.ObjectId,
+    ref: "carts",
   },
 });
 mongoose.set("strictQuery", false);
+
 export const userModel = mongoose.model("users", userSchema);

@@ -10,7 +10,6 @@ import mongoose from "mongoose";
 import { productModel } from "./models/Products.js";
 import { cartModel } from "./models/Cart.js";
 import "dotenv/config";
-// import "./utils/bcrypt.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import FileStore from "session-file-store";
@@ -30,8 +29,6 @@ mongoose
     console.log("DB is connected");
   })
   .catch((error) => console.log("Error en MongoDB Atlas :", error));
-
-const PORT = 8080;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "src/public/img");
@@ -44,8 +41,8 @@ app.engine("handlebars", engine());
 app.set("views", path.resolve(__dirname, "./views"));
 app.set("view engine", "handlebars");
 //PUERTO
-const server = app.listen(PORT, () => {
-  console.log(`Server on port ${PORT}`);
+const server = app.listen(process.env.PORT, () => {
+  console.log(`Server on port ${process.env.PORT}`);
 });
 //MIDDLEWARES
 app.use(express.urlencoded({ extended: true }));

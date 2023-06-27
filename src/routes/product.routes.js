@@ -36,11 +36,20 @@ productRouter.get("/", async (req, res) => {
     first_name: user.first_name,
     last_name: user.last_name,
   };
+  function isAdmin() {
+    const admin = user.role;
+    if (admin === "user") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   res.render("home", {
     titulo: "HOME - TODOS LOS PRODUCTOS",
     products: products,
     user: profile,
-    isAdmin: user.isAdmin,
+    isAdmin: isAdmin(),
   });
 });
 productRouter.get("/realtimeproducts", async (req, res) => {
