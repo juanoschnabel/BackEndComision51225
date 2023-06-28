@@ -1,38 +1,79 @@
-<button onclick="location.href='/sessions/logout'">LOGOUT</button>
-<h2> Hola {{user.first_name}} {{user.last_name}}</h2>
-{{#if isAdmin}}
-  <h4>Rol: Administrador</h4>
-  <button onclick="location.href='/api/products/realtimeproducts'">GESTIONAR
-    PRODUCTOS</button>
-  <button onclick="location.href='/api/cart'">GESTIONAR CARRITOS</button>
-{{else}}
-  <h4>Rol: Usuario</h4>
-{{/if}}
-<div class="card-group d-flex">
-  <div
-    class="row row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
-    id="producto"
-  >
-    {{#each products}}
-      <div class="card">
-        <div class="text-center">
-          <source srcset="..." type="image/svg+xml" />
-          <img
-            src="{{this.thumbnail}}"
-            class="img-fluid img-thumbnail"
-            alt="Imagen del producto"
-          /></div>
-        <div class="card-body">
-          <h5 class="card-title">titulo: {{this.title}}</h5>
-          <p class="card-text">descripcion: {{description}}</p>
-          <p class="card-text">precio: {{price}}</p>
-          <p class="card-text">codigo: {{code}}</p>
-          <p class="card-text">stock: {{stock}}</p>
-          <p class="card-text">estado: {{status}}</p>
-          <p class="card-text">categoria: {{category}}</p>
-          <p class="card-text">ID: {{_id}}</p>
-        </div>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"
+    ></script>
+    <title>{{titulo}}</title>
+  </head>
+  <body>
+    {{#if alertMessage}}
+      <script>
+        const Toast = Swal.mixin({ toast: true, position: "top-end",
+        showConfirmButton: false, timer: 5000, timerProgressBar: true, didOpen:
+        (toast) => { toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer); }, });
+        Toast.fire({ icon: '{{type}}', title: '{{title}}' });
+      </script>
+    {{/if}}
+    <button onclick="location.href='/sessions/logout'">LOGOUT</button>
+    <h2> Hola {{user.first_name}} {{user.last_name}}</h2>
+    {{#if isAdmin}}
+      <h4>Rol: Administrador</h4>
+      <button onclick="location.href='/api/products/realtimeproducts'">GESTIONAR
+        PRODUCTOS</button>
+      <button onclick="location.href='/api/cart'">GESTIONAR CARRITOS</button>
+    {{else}}
+      <h4>Rol: Usuario</h4>
+    {{/if}}
+    <div class="card-group d-flex">
+      <div
+        class="row row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
+        id="producto"
+      >
+        {{#each products}}
+          <div class="card">
+            <div class="text-center">
+              <source srcset="..." type="image/svg+xml" />
+              <img
+                src="{{this.thumbnail}}"
+                class="img-fluid img-thumbnail"
+                alt="Imagen del producto"
+              /></div>
+            <div class="card-body">
+              <h5 class="card-title">titulo: {{this.title}}</h5>
+              <p class="card-text">descripcion: {{description}}</p>
+              <p class="card-text">precio: {{price}}</p>
+              <p class="card-text">codigo: {{code}}</p>
+              <p class="card-text">stock: {{stock}}</p>
+              <p class="card-text">estado: {{status}}</p>
+              <p class="card-text">categoria: {{category}}</p>
+              <p class="card-text">ID: {{_id}}</p>
+            </div>
+            <form action="/api/products" method="post">
+              <div class="mb-3">
+                <input
+                  placeholder="CANTIDAD"
+                  type="number"
+                  name="quantity"
+                  class="form-control"
+                  id="codigo"
+                  aria-describedby="emailHelp"
+                  required
+                />
+              </div>
+              <button
+                class="btn btn-primary"
+                type="submit"
+                name="id_prod"
+                value="{{this._id}}"
+              >AÑADIR ARTÍCULO AL CARRITO</button>
+            </form>
+          </div>
+        {{/each}}
       </div>
-    {{/each}}
-  </div>
-</div>
+    </div>
+  </body>
+</html>

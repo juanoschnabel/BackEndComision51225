@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { productModel } from "../models/Products.js";
+import { cartModel } from "../models/Cart.js";
 const productRouter = Router();
 
 productRouter.get("/errorLogin", (req, res) => {
@@ -52,6 +53,111 @@ productRouter.get("/", async (req, res) => {
     isAdmin: isAdmin(),
   });
 });
+productRouter.post("/", async (req, res) => {
+  async function productList(type, title, productId, quantity) {
+    // Reducir el stock del producto
+    const updatedStock = buscarProducto.stock - quantity;
+    await productModel.findOneAndUpdate(
+      { _id: productId },
+      { stock: updatedStock }
+    );
+    const getProducts = await productModel.find();
+    const products = getProducts.map(
+      ({
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        category,
+        stock,
+        status,
+        _id,
+      }) => ({
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        category,
+        stock,
+        status,
+        _id,
+      })
+    );
+    const administrador = isAdmin();
+
+    res.render("home", {
+      titulo: "HOME - TODOS LOS PRODUCTOS",
+      products: products,
+      user: profile,
+      isAdmin: administrador,
+      alertMessage: true,
+      type: type,
+      title: title,
+    });
+  }
+
+  function isAdmin() {
+    const admin = req.user.role;
+    if (admin === "user") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const profile = {
+    first_name: req.user.first_name,
+    last_name: req.user.last_name,
+  };
+  const { quantity, id_prod } = req.body;
+  let cart = req.user.cart;
+  cart = cart.toString();
+  const buscarCarrito = await cartModel.findOne({ _id: cart });
+  const buscarProducto = await productModel.findOne({ _id: id_prod });
+  const resultado = buscarCarrito.products.find(
+    (objeto) => objeto.id_prod.toString() === id_prod
+  );
+  try {
+    if (buscarCarrito && buscarProducto && resultado) {
+      // Si el producto ya existe en el carrito, actualiza la cantidad
+      await cartModel.findOneAndUpdate(
+        { _id: cart, "products.id_prod": id_prod },
+        { $inc: { "products.$.quantity": quantity } }
+      );
+      console.log("Cantidad del producto modificada exitosamente");
+      productList(
+        "success",
+        "CANTIDAD DE PRODUCTO MODIFICADO EXITOSAMENTE",
+        id_prod,
+        quantity
+      );
+      return;
+    } else if (buscarCarrito && buscarProducto) {
+      const nuevoProducto = {
+        id_prod,
+        quantity,
+      };
+      await cartModel.findOneAndUpdate(
+        { _id: cart },
+        { $push: { products: nuevoProducto } }
+      );
+      console.log("Producto añadido al carrito exitosamente");
+      productList(
+        "success",
+        "PRODUCTO AÑADIDO AL CARRITO EXITOSAMENTE",
+        id_prod,
+        quantity
+      );
+      return;
+    }
+  } catch (error) {
+    productList("error", "OCURRIÓ UN ERROR. INTENTE NUEVAMENTE");
+    return error;
+  }
+});
+
 productRouter.get("/realtimeproducts", async (req, res) => {
   const getProducts = await productModel.find();
   const products = getProducts.map(
