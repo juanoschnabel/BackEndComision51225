@@ -2,7 +2,10 @@ import { Router } from "express";
 import { productModel } from "../models/Products.js";
 import { cartModel } from "../models/Cart.js";
 const productRouter = Router();
-
+const isAdmin = (user) => {
+  const admin = user.role;
+  return admin === "user" ? false : true;
+};
 productRouter.get("/errorLogin", (req, res) => {
   res.render("errorLogin");
 });
@@ -37,20 +40,15 @@ productRouter.get("/", async (req, res) => {
     first_name: user.first_name,
     last_name: user.last_name,
   };
-  function isAdmin() {
-    const admin = user.role;
-    if (admin === "user") {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
+  // function isAdmin() {
+  //   const admin = user.role;
+  //   return admin === "user" ? false : true;
+  // }
   res.render("home", {
     titulo: "HOME - TODOS LOS PRODUCTOS",
     products: products,
     user: profile,
-    isAdmin: isAdmin(),
+    isAdmin: isAdmin(user),
   });
 });
 productRouter.post("/", async (req, res) => {
@@ -85,8 +83,7 @@ productRouter.post("/", async (req, res) => {
         _id,
       })
     );
-    const administrador = isAdmin();
-
+    const administrador = isAdmin(req.user);
     res.render("home", {
       titulo: "HOME - TODOS LOS PRODUCTOS",
       products: products,
@@ -98,14 +95,14 @@ productRouter.post("/", async (req, res) => {
     });
   }
 
-  function isAdmin() {
-    const admin = req.user.role;
-    if (admin === "user") {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  // function isAdmin() {
+  //   const admin = req.user.role;
+  //   if (admin === "user") {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   const profile = {
     first_name: req.user.first_name,
@@ -126,7 +123,6 @@ productRouter.post("/", async (req, res) => {
         { _id: cart, "products.id_prod": id_prod },
         { $inc: { "products.$.quantity": quantity } }
       );
-      console.log("Cantidad del producto modificada exitosamente");
       productList(
         "success",
         "CANTIDAD DE PRODUCTO MODIFICADO EXITOSAMENTE",
@@ -143,7 +139,6 @@ productRouter.post("/", async (req, res) => {
         { _id: cart },
         { $push: { products: nuevoProducto } }
       );
-      console.log("Producto añadido al carrito exitosamente");
       productList(
         "success",
         "PRODUCTO AÑADIDO AL CARRITO EXITOSAMENTE",
