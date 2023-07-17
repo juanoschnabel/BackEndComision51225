@@ -1,1 +1,7 @@
-<h1>prueba ticket</h1>
+<h1>TU COMPRA FUE REALIZADA CON ÉXITO</h1>
+<H2>Enviamos a tu mail registrado el detalle de la compra y el monto total</H2>
+<h3>los productos que compraste son:</h3>
+{{#each productosComprados}}
+  <h5>{{this}}</h5>
+{{/each}}
+<button onclick="location.href='/api/products'">SEGUIR COMPRANDO</button>

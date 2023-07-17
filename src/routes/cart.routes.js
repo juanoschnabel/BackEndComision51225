@@ -1,111 +1,21 @@
 //IMPORTACIONES
-import mongoose from "mongoose";
 import { Router } from "express";
-import { cartModel } from "../models/Cart.js";
-import { productModel } from "../models/Products.js";
-import { ticketModel } from "../models/Ticket.js";
-
+import { cartService } from "../services/carts.service.js";
 //RUTEO
 const cartRouter = Router();
 // //RUTAS
 cartRouter.get("/:cid/purchase", async (req, res) => {
-  const userCart = req.user.cart.toString();
-  const cid = req.params.cid;
-  const buscarCarrito = await cartModel.findOne({ _id: cid });
-  const buscarProductos = await productModel.find({
-    _id: { $in: buscarCarrito.products.map((item) => item.id_prod) },
-  });
-  let total = 0;
-  for (const item of buscarCarrito.products) {
-    const producto = buscarProductos.find(
-      (prod) => prod._id.toString() === item.id_prod.toString()
-    );
-    if (producto) {
-      const subtotal = producto.price * item.quantity;
-      total += subtotal;
-    }
-  }
-  // console.log("Monto total de la compra:", total);
-  res.render("carrito", {
-    titulo: "Tu carrito",
-    carrito: buscarCarrito.products,
-    total: total,
-    userCart,
-  });
+  cartService.getPurchase(req, res);
 });
 cartRouter.post("/:cid/purchase", async (req, res) => {
-  const total = req.body.total;
-  console.log(req.user._id);
-  console.log(total);
-  await ticketModel.create({
-    amount: total,
-    purchaser: req.user._id,
-  });
-  res.render("ticket");
+  cartService.postPurchase(req, res);
 });
 
 cartRouter.get("/", async (req, res) => {
-  const carts = await cartModel.find();
-  const cartList = carts.map(({ _id, products }) => ({
-    id: _id,
-    products: products,
-  }));
-  res.render("carts", {
-    titulo: "Gestionar Carritos",
-    carts: cartList,
-  });
+  cartService.getCart(req, res);
 });
 cartRouter.post("/", async (req, res) => {
-  async function cartList(type, title) {
-    const carts = await cartModel.find();
-    const cartList = carts.map(({ _id, products }) => ({
-      id: _id,
-      products: products,
-      alertMessage: true,
-    }));
-    res.render("carts", {
-      titulo: "Gestionar Carritos",
-      carts: cartList,
-      alertMessage: true,
-      type: type,
-      title: title,
-    });
-  }
-  try {
-    const buscarCarrito = await cartModel.findOne({ _id: req.body.idCart });
-    const buscarProducto = await productModel.findOne({
-      _id: req.body.idProduct,
-    });
-    if (req.body.crear) {
-      const createCart = new cartModel();
-      await createCart.save();
-      cartList("success", "CARRITO CREADO EXITOSAMENTE");
-    } else if (req.body.borrar) {
-      const cartId = req.body.borrar;
-      await cartModel.deleteOne({ _id: cartId });
-      cartList("success", "CARRITO ELIMINADO EXITOSAMENTE");
-    } else if (buscarCarrito && buscarProducto) {
-      const updateCart = {
-        products: [
-          {
-            id_prod: req.body.idProduct,
-            quantity: req.body.quantity,
-          },
-        ],
-      };
-      await cartModel.findOneAndUpdate(
-        { _id: req.body.idCart },
-        { $push: { products: updateCart.products[0] } }
-      );
-      cartList("success", "PRODUCTO AGREGADO AL CARRITO EXITOSAMENTE!");
-    }
-  } catch (error) {
-    cartList(
-      "error",
-      "Ocurrió un problema en la carga del carrito. Ingrese un Id de carrito y de productos válidos"
-    );
-    return error;
-  }
+  cartService.postCart(req, res);
 });
 
 // cartRouter.post("/:cid/products/:pid", async (req, res) => {
