@@ -1,5 +1,8 @@
 <button onclick="location.href='/api/products'">VOLVER</button>
-<button onclick="location.href='/api/cart/ticket'">FINALIZAR COMPRA</button>
+<form method="POST" action="/api/cart/{{userCart}}/purchase">
+  <input type="hidden" name="total" value="{{total}}">
+  <button type="submit">FINALIZAR COMPRA</button>
+</form>
 <div class="card">
   <div class="card-body">
     <p class="card-text">Productos ingresados:

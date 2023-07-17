@@ -9,6 +9,7 @@ import { ticketModel } from "../models/Ticket.js";
 const cartRouter = Router();
 // //RUTAS
 cartRouter.get("/:cid/purchase", async (req, res) => {
+  const userCart = req.user.cart.toString();
   const cid = req.params.cid;
   const buscarCarrito = await cartModel.findOne({ _id: cid });
   const buscarProductos = await productModel.find({
@@ -24,34 +25,22 @@ cartRouter.get("/:cid/purchase", async (req, res) => {
       total += subtotal;
     }
   }
-  console.log("Monto total de la compra:", total);
+  // console.log("Monto total de la compra:", total);
   res.render("carrito", {
     titulo: "Tu carrito",
     carrito: buscarCarrito.products,
     total: total,
+    userCart,
   });
 });
 cartRouter.post("/:cid/purchase", async (req, res) => {
   const total = req.body.total;
+  console.log(req.user._id);
   console.log(total);
-  res.redirect("ticket");
-  // Resto del código para procesar la compra y generar el ticket
-});
-
-cartRouter.get("/ticket", (req, res) => {
-  console.log(req);
-  // await ticketModel.create([
-  //   {
-  // amount:
-  //     title: "Product 46",
-  //     description: "Description for Product 46",
-  //     code: "CODE46",
-  //     category: "Category 4",
-  //     price: 145,
-  //     stock: 145,
-  //     status: true,
-  //     thumbnail: ["hola"],
-  //   },
+  await ticketModel.create({
+    amount: total,
+    purchaser: req.user._id,
+  });
   res.render("ticket");
 });
 
