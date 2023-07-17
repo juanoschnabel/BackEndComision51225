@@ -83,6 +83,11 @@ class ProductsService {
             _id,
           })
         );
+        const profile = {
+          first_name: req.user.first_name,
+          last_name: req.user.last_name,
+          cart: req.user.cart,
+        };
         const administrador = isAdmin(req.user);
         res.render("home", {
           titulo: "HOME - TODOS LOS PRODUCTOS",
@@ -103,11 +108,6 @@ class ProductsService {
           return true;
         }
       }
-
-      const profile = {
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-      };
       const { quantity, id_prod } = req.body;
       let cart = req.user.cart;
       cart = cart.toString();

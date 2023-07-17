@@ -1,1 +1,13 @@
-<h1>hola</h1>
+<button onclick="location.href='/api/products'">VOLVER</button>
+<button onclick="location.href='/api/cart/ticket'">FINALIZAR COMPRA</button>
+<div class="card">
+  <div class="card-body">
+    <p class="card-text">Productos ingresados:
+      {{#each carrito}}
+        {{this}}
+      {{/each}}
+    </p>
+    <h3>Monto total {{total}}</h3>
+  </div>
+  </div>
+</div>

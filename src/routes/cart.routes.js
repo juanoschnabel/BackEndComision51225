@@ -3,12 +3,56 @@ import mongoose from "mongoose";
 import { Router } from "express";
 import { cartModel } from "../models/Cart.js";
 import { productModel } from "../models/Products.js";
+import { ticketModel } from "../models/Ticket.js";
 
 //RUTEO
 const cartRouter = Router();
 // //RUTAS
 cartRouter.get("/:cid/purchase", async (req, res) => {
-  res.render("carrito");
+  const cid = req.params.cid;
+  const buscarCarrito = await cartModel.findOne({ _id: cid });
+  const buscarProductos = await productModel.find({
+    _id: { $in: buscarCarrito.products.map((item) => item.id_prod) },
+  });
+  let total = 0;
+  for (const item of buscarCarrito.products) {
+    const producto = buscarProductos.find(
+      (prod) => prod._id.toString() === item.id_prod.toString()
+    );
+    if (producto) {
+      const subtotal = producto.price * item.quantity;
+      total += subtotal;
+    }
+  }
+  console.log("Monto total de la compra:", total);
+  res.render("carrito", {
+    titulo: "Tu carrito",
+    carrito: buscarCarrito.products,
+    total: total,
+  });
+});
+cartRouter.post("/:cid/purchase", async (req, res) => {
+  const total = req.body.total;
+  console.log(total);
+  res.redirect("ticket");
+  // Resto del código para procesar la compra y generar el ticket
+});
+
+cartRouter.get("/ticket", (req, res) => {
+  console.log(req);
+  // await ticketModel.create([
+  //   {
+  // amount:
+  //     title: "Product 46",
+  //     description: "Description for Product 46",
+  //     code: "CODE46",
+  //     category: "Category 4",
+  //     price: 145,
+  //     stock: 145,
+  //     status: true,
+  //     thumbnail: ["hola"],
+  //   },
+  res.render("ticket");
 });
 
 cartRouter.get("/", async (req, res) => {
