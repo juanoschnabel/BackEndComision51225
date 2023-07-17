@@ -1,5 +1,4 @@
 import express from "express";
-// import "dotenv/config";
 import "./passport/passportStrategies.js";
 import productRouter from "./routes/product.routes.js";
 import sessionRouter from "./routes/session.router.js";
@@ -8,32 +7,16 @@ import { __dirname } from "./config/path.js";
 import { engine } from "express-handlebars";
 import * as path from "path";
 import cookieParser from "cookie-parser";
-// import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
-// import multer from "multer";
 import session from "express-session";
 import passport from "passport";
 import cors from "cors";
 import config from "./utils/config.js";
 import "./config/configDB.js";
+import { Server } from "socket.io";
+import { MessagesManager } from "./controllers/MessageManager.js";
 //CONFIGURACIONES
 const app = express();
-// mongoose
-//   .connect(config.URL_MONGODB_ATLAS, {
-//     dbName: "ecommerce",
-//   })
-//   .then(() => {
-//     console.log("DB is connected");
-//   })
-//   .catch((error) => console.log("Error en MongoDB Atlas :", error));
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "src/public/img");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${file.originalname}`);
-//   },
-// });
 app.engine("handlebars", engine());
 app.set("views", path.resolve(__dirname, "./views"));
 app.set("view engine", "handlebars");
@@ -68,12 +51,26 @@ app.use("/sessions", sessionRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/", express.static(__dirname + "/public"));
-// app.post("/upload", upload.single("product"), (req, res) => {
-//   //IMAGENES
-//   console.log(req.body);
-//   console.log(req.file);
-//   res.send("imagen subida");
-// });
 app.get("/", async (req, res) => {
   res.render("sessions/login");
+});
+app.get("/chat", async (req, res) => {
+  res.render("chat");
+});
+//SOCKET IO
+const messagesManager = new MessagesManager(
+  config.URL_MONGODB_ATLAS,
+  "ecommerce",
+  "messages"
+);
+const io = new Server(server);
+io.on("connection", (socket) => {
+  console.log("cliente conectado");
+  socket.on("nuevoMensaje", async ([data]) => {
+    const user = data.user;
+    const mensaje = data.message;
+    await messagesManager.addMessage(user, mensaje);
+    const newMessage = await messagesManager.getMessages();
+    io.emit("nuevosMensajes", newMessage);
+  });
 });
