@@ -7,6 +7,10 @@ import { productModel } from "../models/Products.js";
 //RUTEO
 const cartRouter = Router();
 // //RUTAS
+cartRouter.get("/:cid/purchase", async (req, res) => {
+  res.render("carrito");
+});
+
 cartRouter.get("/", async (req, res) => {
   const carts = await cartModel.find();
   const cartList = carts.map(({ _id, products }) => ({

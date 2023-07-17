@@ -6,6 +6,7 @@ class ProductsService {
   async getProducts(req, res) {
     try {
       const user = req.user;
+      const cart = user.cart.toString();
       const getProducts = await productModel.find();
       const products = getProducts.map(
         ({
@@ -33,6 +34,7 @@ class ProductsService {
       const profile = {
         first_name: user.first_name,
         last_name: user.last_name,
+        cart,
       };
       function isAdmin() {
         const admin = user.role;
