@@ -1,6 +1,4 @@
 import { Router } from "express";
-// import { userModel } from "../models/Users.js";
-// import { hashData, compareData } from "../utils/bcrypt.js";
 import passport from "passport";
 const sessionRouter = Router();
 //vista para registrar usuarios

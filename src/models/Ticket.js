@@ -17,8 +17,7 @@ const ticketSchema = new Schema({
     required: true,
   },
   purchaser: {
-    type: Schema.Types.ObjectId,
-    ref: "users",
+    type: String,
     required: true,
   },
 });

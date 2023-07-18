@@ -22,7 +22,6 @@ class CartService {
           total += subtotal;
         }
       }
-      // console.log("Monto total de la compra:", total);
       res.render("carrito", {
         titulo: "Tu carrito",
         carrito: buscarCarrito.products,
@@ -35,14 +34,9 @@ class CartService {
   }
   async postPurchase(req, res) {
     try {
-      //   console.log(req.params.cid);
-      //   console.log(req.user.email);
-      //   console.log(req.user.cart.toString());
-      //   console.log(total);
       const total = req.body.total;
       const email = req.user.email;
       const carrito = await cartModel.findById(req.user.cart.toString());
-      //   console.log(carrito);
       const buscarProductos = await productModel.find({
         _id: { $in: carrito.products.map((item) => item.id_prod) },
       });
@@ -51,7 +45,7 @@ class CartService {
       );
       await ticketModel.create({
         amount: total,
-        purchaser: req.user._id,
+        purchaser: email,
       });
       await transporter.sendMail({
         to: email,

@@ -31,15 +31,3 @@ app.post("/upload", upload.single("product"), (req, res) => {
   console.log(req.file);
   res.send("imagen subida");
 });
-// app.use(
-//   session({
-//     store: MongoStore.create({
-//       mongoUrl: config.URL_MONGODB_ATLAS,
-//       dbName: "ecommerce",
-//       collectionName: "cookies",
-//     }),
-//     secret: "mysecret",
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );

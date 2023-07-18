@@ -1,6 +1,4 @@
 import { Router } from "express";
-import { productModel } from "../models/Products.js";
-import { cartModel } from "../models/Cart.js";
 import { productService } from "../services/products.services.js";
 const productRouter = Router();
 productRouter.get("/errorLogin", (req, res) => {
