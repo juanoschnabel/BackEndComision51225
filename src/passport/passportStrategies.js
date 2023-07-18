@@ -5,6 +5,8 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { compareData, hashData } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
 import config from "../utils/config.js";
+import { transporter } from "../utils/nodemailer.js";
+
 //estrategia passport-local (username, password)
 passport.use(
   "login",
@@ -44,7 +46,12 @@ passport.use(
         await cart.save();
         user.cart = cart._id;
         await user.save();
-
+        await transporter.sendMail({
+          to: userNew.email,
+          subject: "Ecommerce",
+          text: `Hola ${userNew.first_name} ${userNew.last_name}.Tu usuario fue registrado con éxito!!
+          El mail registrado es ${userNew.email}.`,
+        });
         return done(null, user);
       } catch (error) {
         if (error.name === "MongoServerError" && error.code === 11000) {
