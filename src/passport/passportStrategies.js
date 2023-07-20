@@ -40,7 +40,6 @@ passport.use(
         const userNew = { ...req.body, password: hashPassword };
         const user = new userModel(userNew);
         await user.save();
-
         // Crear un nuevo carrito y establecer la referencia en el usuario
         const cart = new cartModel();
         await cart.save();
@@ -50,7 +49,7 @@ passport.use(
           to: userNew.email,
           subject: "Ecommerce",
           text: `Hola ${userNew.first_name} ${userNew.last_name}.Tu usuario fue registrado con éxito!!
-          El mail registrado es ${userNew.email}.`,
+          El mail registrado es ${userNew.email} y la contraseña es ${register.password}. No compartas esta información con nadie!`,
         });
         return done(null, user);
       } catch (error) {
