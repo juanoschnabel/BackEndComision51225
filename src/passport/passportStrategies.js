@@ -6,7 +6,8 @@ import { compareData, hashData } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
 import config from "../utils/config.js";
 import { transporter } from "../utils/nodemailer.js";
-
+import CustomError from "../services/errors/CustomError.js";
+import { EErrors } from "../services/errors/enum.js";
 //estrategia passport-local (username, password)
 passport.use(
   "login",
@@ -34,7 +35,16 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email", passReqToCallback: true },
     async (req, email, password, done) => {
+      const { first_name, last_name, age, email } = req.body;
       try {
+        if (!first_name || !last_name || !email) {
+          CustomError.createError({
+            name: "error al crear el usuario",
+            cause: generateUserErrorInfo({ first_name, last_name, age, email }),
+            message: "Error al crear el usuario",
+            code: EErrors.INVALID_TYPES_ERROR,
+          });
+        }
         const register = req.body;
         const hashPassword = await hashData(register.password);
         const userNew = { ...req.body, password: hashPassword };

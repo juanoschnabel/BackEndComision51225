@@ -1,10 +1,18 @@
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Login Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
   </head>
+
   <body>
     {{#if alertMessage}}
       <script>
@@ -15,16 +23,51 @@
         Toast.fire({ icon: '{{type}}', title: '{{title}}' });
       </script>
     {{/if}}
-    <h1>Iniciar Sesion</h1>
-    <form action="/sessions/login" method="post">
-      email:
-      <input type="text" name="email" required /><br />
-      password:
-      <input type="password" name="password" required /><br />
-      <input type="submit" value="Iniciar Sesion" />
-    </form>
-    <button onclick="location.href='/sessions/register'">REGISTRATE</button>
-    <h2>SIGNUP WITH GITHUB</h2>
-    <button onclick="location.href='/sessions/githubSignup'">GITHUB</button>
+
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h1 class="text-center">Iniciar Sesión</h1>
+          <form action="/sessions/login" method="post">
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="text" class="form-control" name="email" required />
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Iniciar
+              Sesión</button>
+          </form>
+          <div class="text-center mt-3">
+            <button
+              class="btn btn-link"
+              onclick="location.href='/sessions/register'"
+            >REGISTRATE</button>
+          </div>
+          <h2 class="text-center mt-4">SIGNUP WITH GITHUB</h2>
+          <div class="text-center">
+            <button
+              class="btn btn-dark"
+              onclick="location.href='/sessions/githubSignup'"
+            >GITHUB</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    ></script>
   </body>
+
 </html>

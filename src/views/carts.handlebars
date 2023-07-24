@@ -11,7 +11,10 @@
   </head>
 
   <body>
-    <button onclick="location.href='/api/products'">VOLVER</button>
+    <button
+      class="btn btn-primary"
+      onclick="location.href='/api/products'"
+    >VOLVER</button>
     {{#if alertMessage}}
       <script>
         const Toast = Swal.mixin({ toast: true, position: "top-end",

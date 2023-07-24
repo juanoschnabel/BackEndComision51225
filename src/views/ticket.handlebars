@@ -1,7 +1,47 @@
-<h1>TU COMPRA FUE REALIZADA CON ÉXITO</h1>
-<H2>Enviamos a tu mail registrado el detalle de la compra y el monto total</H2>
-<h3>los productos que compraste son:</h3>
-{{#each productosComprados}}
-  <h5>{{this}}</h5>
-{{/each}}
-<button onclick="location.href='/api/products'">SEGUIR COMPRANDO</button>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compra Exitosa</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h1 class="text-center">TU COMPRA FUE REALIZADA CON ÉXITO</h1>
+          <h2 class="text-center">Enviamos a tu mail registrado el detalle de la
+            compra y el monto total</h2>
+          <h3 class="text-center">Los productos que compraste son:</h3>
+          {{#each productosComprados}}
+            <h5 class="text-center">{{this}}</h5>
+          {{/each}}
+          <div class="text-center mt-3">
+            <button
+              class="btn btn-primary"
+              onclick="location.href='/api/products'"
+            >SEGUIR COMPRANDO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional) -->
+    <!-- You can include it if you need Bootstrap's JavaScript features -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    ></script>
+  </body>
+
+</html>
