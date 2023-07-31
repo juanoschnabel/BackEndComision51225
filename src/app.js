@@ -17,6 +17,8 @@ import "./config/configDB.js";
 import { Server } from "socket.io";
 import { MessagesManager } from "./controllers/MessageManager.js";
 import compression from "express-compression";
+import { addLogger } from "./utils/logger.js";
+import logger from "./routes/loggerTest.routes.js";
 //CONFIGURACIONES
 const app = express();
 app.engine("handlebars", engine());
@@ -55,6 +57,12 @@ app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/mockingproducts", createProductsWhitFacker);
 app.use("/", express.static(__dirname + "/public"));
+app.use(addLogger);
+app.use("/loggerTest", logger);
+// app.get("/logger", (req, res) => {
+//   req.logger.warning("Alerta");
+//   res.send({ message: " Estamos probando el logger" });
+// });
 app.get("/", async (req, res) => {
   res.render("sessions/login");
 });

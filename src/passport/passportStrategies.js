@@ -35,7 +35,7 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email", passReqToCallback: true },
     async (req, email, password, done) => {
-      const { first_name, last_name, age, email } = req.body;
+      const { first_name, last_name, age } = req.body;
       try {
         if (!first_name || !last_name || !email) {
           CustomError.createError({
