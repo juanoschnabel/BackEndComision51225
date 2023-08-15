@@ -39,14 +39,14 @@ class ProductsService {
         const admin = user.role;
         return admin === "user" ? false : true;
       }
-      res.render("home", {
+      res.status(200).render("home", {
         titulo: "HOME - TODOS LOS PRODUCTOS",
         products: products,
         user: profile,
         isAdmin: isAdmin(user),
       });
     } catch (error) {
-      return error;
+      res.status(500).send("Internal Server Error");
     }
   }
   async addProduct(req, res) {

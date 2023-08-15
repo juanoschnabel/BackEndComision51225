@@ -1,0 +1,39 @@
+paths:
+  /api/products:
+    get:
+      sumary: Obtener todos los productos de la base de datos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Si la consulta a los productos es satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la consulta
+    post:
+      sumary: Metodo para actualizar
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Si la consulta a los usuarios es satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la consulta
+  /api/products/realtimeproducts:
+    get:
+      sumary: Obtener todos los productos de la base de datos con el perfil de administrador
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Si la consulta a los productos es satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la consulta
+    post:
+      sumary: Metodo para crear productos con el perfil de administrador
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Si la consulta a los usuarios es satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la consulta

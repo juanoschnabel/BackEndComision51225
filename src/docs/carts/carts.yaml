@@ -1,0 +1,39 @@
+paths:
+  /api/cart:
+    get:
+      sumary: Obtener todos los carritos existentes en la base de datos solo para el perfil administrador
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Si la consulta a los carritos es satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la consulta
+    post:
+      sumary: Crear un carrito en la base de datos solo para el perfil administrador
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Si la creacion del carrito es satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la creacion del carrito
+  /api/cart/:cid/purchase:
+    get:
+      sumary: Obtener el carrito del usuario logueado
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Si la consulta es satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la consulta
+    post:
+      sumary: Finalizar la compra para el usuario
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Si la compra se realiza correctamente
+        "500":
+          description: Si hubo un error en el momento de la ejecucion de compra

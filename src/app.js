@@ -19,6 +19,8 @@ import { MessagesManager } from "./controllers/MessageManager.js";
 import compression from "express-compression";
 import { addLogger } from "./utils/logger.js";
 import logger from "./routes/loggerTest.routes.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 //CONFIGURACIONES
 const app = express();
 app.engine("handlebars", engine());
@@ -28,6 +30,23 @@ app.set("view engine", "handlebars");
 const server = app.listen(config.PORT, () => {
   console.log(`Server on port ${config.PORT}`);
 });
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentacion de las APIs",
+      description: "Informacion de productos y carritos",
+      version: "1.0.0",
+      contact: {
+        name: "Juan Schnabel",
+      },
+    },
+  },
+  apis: [`${process.cwd()}/src/docs/**/*.yaml`],
+  //apis: [`./docs/**/*.yaml`],
+};
+const spec = swaggerJSDoc(swaggerOptions);
 //MIDDLEWARES
 app.use(compression());
 app.use(cors());
@@ -52,6 +71,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 //ROUTES
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(spec));
 app.use("/sessions", sessionRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
