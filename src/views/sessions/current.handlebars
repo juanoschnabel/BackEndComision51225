@@ -24,10 +24,25 @@
             <p><strong>Rol:</strong> {{rol}}</p>
           </div>
           <div class="text-center">
-            <button
-              class="btn btn-primary"
-              onclick="location.href='/api/products'"
-            >IR A VER LOS PRODUCTOS</button>
+            {{#if isAdmin}}
+              <button
+                class="btn btn-primary"
+                onclick="location.href='/api/products'"
+              >IR A VER LOS PRODUCTOS</button>
+            {{else}}
+              <button
+                onclick="location.href='/api/products/realtimeproducts'"
+                class="btn btn-primary"
+              >GESTIONAR PRODUCTOS</button>
+              <button
+                onclick="location.href='/sessions/users'"
+                class="btn btn-primary"
+              >GESTIONAR USUARIOS</button>
+              <button
+                onclick="location.href='/api/cart'"
+                class="btn btn-primary"
+              >GESTIONAR CARRITOS</button>
+            {{/if}}
             <button
               class="btn btn-danger"
               onclick="location.href='/sessions/logout'"

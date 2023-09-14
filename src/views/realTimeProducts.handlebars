@@ -19,10 +19,18 @@
         Toast.fire({ icon: '{{type}}', title: '{{title}}' });
       </script>
     {{/if}}
+    {{#if isAdmin}}
+     <button
+      class="btn btn-primary"
+      onclick="location.href='/sessions/current'"
+    >VOLVER</button>
+    {{else}}
+    
  <button
       class="btn btn-primary"
       onclick="location.href='/api/products'"
     >VOLVER</button>
+    {{/if}}
     <main class="row justify-content-center">
       <form
         class="mt-2 col-9 col-md-4 align-items-sm-center"

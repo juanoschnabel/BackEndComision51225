@@ -29,6 +29,9 @@ const productSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  userId: {
+    type: Schema.Types.ObjectId,
+  },
   thumbnail: [],
 });
 productSchema.plugin(mongoosePaginate);

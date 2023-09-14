@@ -32,23 +32,26 @@
       class="btn btn-primary"
     >VOLVER</button>
     <h2>Hola {{user.first_name}} {{user.last_name}}</h2>
-    {{#if isAdmin}}
-      <h4>Rol: Administrador</h4>
-      <button
-        onclick="location.href='/api/products/realtimeproducts'"
-        class="btn btn-primary"
-      >GESTIONAR PRODUCTOS</button>
-      <button
-        onclick="location.href='/api/cart'"
-        class="btn btn-primary"
-      >GESTIONAR CARRITOS</button>
-    {{else}}
+    {{#if isUser}}
       <h4>Rol: Usuario</h4>
       <button onclick="location.href='/chat'" class="btn btn-primary">IR AL CHAT</button>
       <button
         onclick="location.href='/api/cart/{{user.cart}}/purchase'"
         class="btn btn-primary"
       >VER CARRITO</button>
+    {{/if}}
+    {{#if isPremium}}
+      <h2>Sos premium</h2>
+      <button
+        onclick="location.href='/api/products/realtimeproducts'"
+        class="btn btn-primary"
+      >GESTIONAR PRODUCTOS</button>
+      <button
+        onclick="location.href='/api/cart/{{user.cart}}/purchase'"
+        class="btn btn-primary"
+      >VER CARRITO</button>
+    {{/if}}
+    {{#if verProductos}}
       <div class="card-group d-flex">
         <div
           class="row row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"

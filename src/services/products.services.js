@@ -5,8 +5,9 @@ class ProductsService {
   async getProducts(req, res) {
     try {
       const user = req.user;
+      const userId = req.user._id;
       const cart = user.cart.toString();
-      const getProducts = await productModel.find();
+      const getProducts = await productModel.find({ userId: { $ne: userId } });
       const products = getProducts.map(
         ({
           title,
@@ -35,15 +36,15 @@ class ProductsService {
         last_name: user.last_name,
         cart,
       };
-      function isAdmin() {
-        const admin = user.role;
-        return admin === "user" ? false : true;
-      }
+
       res.status(200).render("home", {
         titulo: "HOME - TODOS LOS PRODUCTOS",
         products: products,
         user: profile,
-        isAdmin: isAdmin(user),
+        verProductos: user.role === "premium" || user.role === "user",
+        isAdmin: user.role === "admin",
+        isUser: user.role === "user",
+        isPremium: user.role === "premium",
       });
     } catch (error) {
       res.status(500).send("Internal Server Error");
@@ -58,7 +59,10 @@ class ProductsService {
           { _id: productId },
           { stock: updatedStock }
         );
-        const getProducts = await productModel.find();
+        const userId = req.user._id;
+        const getProducts = await productModel.find({
+          userId: { $ne: userId },
+        });
         const products = getProducts.map(
           ({
             title,
@@ -86,26 +90,20 @@ class ProductsService {
           first_name: req.user.first_name,
           last_name: req.user.last_name,
           cart: req.user.cart,
+          role: req.user.role,
+          userId: req.user._id,
         };
-        const administrador = isAdmin(req.user);
         res.render("home", {
           titulo: "HOME - TODOS LOS PRODUCTOS",
           products: products,
           user: profile,
-          isAdmin: administrador,
+          isAdmin: profile.role === "admin",
+          isUser: profile.role === "user",
+          isPremium: profile.role === "premium",
           alertMessage: true,
           type: type,
           title: title,
         });
-      }
-
-      function isAdmin() {
-        const admin = req.user.role;
-        if (admin === "user") {
-          return false;
-        } else {
-          return true;
-        }
       }
       const { quantity, id_prod } = req.body;
       let cart = req.user.cart;
@@ -156,7 +154,17 @@ class ProductsService {
   }
   async getRealTimeProducts(req, res) {
     try {
-      const getProducts = await productModel.find();
+      const isAdmin = req.user.role
+      const userId = req.user._id;
+      let getProducts;
+      if (req.user.role != "admin") {
+        getProducts = await productModel.find({
+          userId: { $eq: userId },
+        });
+      } else {
+        getProducts = await productModel.find();
+      }
+
       const products = getProducts.map(
         ({
           title,
@@ -184,6 +192,7 @@ class ProductsService {
       res.render("realTimeProducts", {
         titulo: "GESTIÓN DE PRODUCTOS GET",
         products: products,
+        isAdmin: isAdmin === "admin"
       });
     } catch (error) {
       return error;
@@ -191,8 +200,11 @@ class ProductsService {
   }
   async postRealTimeProducts(req, res) {
     try {
+      const userId = req.user._id;
       async function productList(type, title) {
-        const getProducts = await productModel.find();
+        const getProducts = await productModel.find({
+          userId: { $eq: userId },
+        });
         const products = getProducts.map(
           ({
             title,
@@ -249,6 +261,7 @@ class ProductsService {
             category,
             stock,
             status,
+            userId,
           };
           const product = new productModel(newProduct);
           await product.save();

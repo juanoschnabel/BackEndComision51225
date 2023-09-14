@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { userService } from "../services/user.services.js";
 import passport from "passport";
 const sessionRouter = Router();
 //vista para registrar usuarios
@@ -18,6 +19,12 @@ sessionRouter.post(
     successRedirect: "/sessions/current",
   })
 );
+sessionRouter.get("/users", (req, res) => {
+  userService.getUsers(req, res);
+});
+sessionRouter.post("/users", (req, res) => {
+  userService.deleteUser(req, res);
+});
 sessionRouter.get("/current", (req, res) => {
   const { first_name, last_name, email, age, role, cart } = req.user;
   res.render("sessions/current", {
@@ -26,6 +33,7 @@ sessionRouter.get("/current", (req, res) => {
     email: email,
     age: age,
     rol: role,
+    isAdmin: role != "admin",
     cart: cart,
   });
 });

@@ -35,12 +35,18 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email", passReqToCallback: true },
     async (req, email, password, done) => {
-      const { first_name, last_name, age } = req.body;
+      const { first_name, last_name, age, role } = req.body;
       try {
         if (!first_name || !last_name || !email) {
           CustomError.createError({
             name: "error al crear el usuario",
-            cause: generateUserErrorInfo({ first_name, last_name, age, email }),
+            cause: generateUserErrorInfo({
+              first_name,
+              last_name,
+              age,
+              email,
+              role,
+            }),
             message: "Error al crear el usuario",
             code: EErrors.INVALID_TYPES_ERROR,
           });
@@ -55,12 +61,12 @@ passport.use(
         await cart.save();
         user.cart = cart._id;
         await user.save();
-        await transporter.sendMail({
-          to: userNew.email,
-          subject: "Ecommerce",
-          text: `Hola ${userNew.first_name} ${userNew.last_name}.Tu usuario fue registrado con éxito!!
-          El mail registrado es ${userNew.email} y la contraseña es ${register.password}. No compartas esta información con nadie!`,
-        });
+        // await transporter.sendMail({
+        //   to: userNew.email,
+        //   subject: "Ecommerce",
+        //   text: `Hola ${userNew.first_name} ${userNew.last_name}.Tu usuario fue registrado con éxito!!
+        //   El mail registrado es ${userNew.email} y la contraseña es ${register.password}. No compartas esta información con nadie!`,
+        // });
         return done(null, user);
       } catch (error) {
         if (error.name === "MongoServerError" && error.code === 11000) {
