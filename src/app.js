@@ -15,6 +15,7 @@ import cors from "cors";
 import config from "./utils/config.js";
 import "./config/configDB.js";
 import { Server } from "socket.io";
+import { transporter } from "./utils/nodemailer.js";
 import { MessagesManager } from "./controllers/MessageManager.js";
 import compression from "express-compression";
 import { addLogger } from "./utils/logger.js";

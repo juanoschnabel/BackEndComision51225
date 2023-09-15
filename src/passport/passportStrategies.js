@@ -61,12 +61,51 @@ passport.use(
         await cart.save();
         user.cart = cart._id;
         await user.save();
-        // await transporter.sendMail({
-        //   to: userNew.email,
-        //   subject: "Ecommerce",
-        //   text: `Hola ${userNew.first_name} ${userNew.last_name}.Tu usuario fue registrado con éxito!!
-        //   El mail registrado es ${userNew.email} y la contraseña es ${register.password}. No compartas esta información con nadie!`,
-        // });
+        await transporter.sendMail({
+          to: userNew.email,
+          subject: "Registro Exitoso en Ecommerce",
+          html: `
+            <html>
+              <head>
+                <style>
+                  /* Agrega estilos CSS aquí para dar formato al correo electrónico */
+                  body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f5f5f5;
+                    padding: 20px;
+                  }
+                  .container {
+                    background-color: #ffffff;
+                    border-radius: 5px;
+                    padding: 20px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  }
+                  h1 {
+                    color: #333;
+                  }
+                  p {
+                    color: #555;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <h1>¡Registro Exitoso en Ecommerce!</h1>
+                  <p>Hola ${userNew.first_name} ${userNew.last_name},</p>
+                  <p>Tu usuario ha sido registrado con éxito en nuestro sistema.</p>
+                  <p>A continuación, encontrarás los detalles de tu registro:</p>
+                  <ul>
+                    <li><strong>Email:</strong> ${userNew.email}</li>
+                    <li><strong>Contraseña:</strong> ${register.password}</li>
+                  </ul>
+                  <p>No compartas esta información con nadie y mantenla segura.</p>
+                  <p>Gracias por unirte a Ecommerce.</p>
+                </div>
+              </body>
+            </html>
+          `,
+        });
+
         return done(null, user);
       } catch (error) {
         if (error.name === "MongoServerError" && error.code === 11000) {

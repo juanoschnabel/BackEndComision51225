@@ -1,4 +1,4 @@
-<html lang="en">
+{{!-- <html lang="en">
 
   <head>
     <meta charset="UTF-8" />
@@ -23,8 +23,14 @@
           <div class="card">
             <div class="card-body">
               <p class="card-text">Productos ingresados:
-                {{#each carrito}}
-                  {{this}}
+                {{#each productos}}
+                  <p>titulo: {{this.title}}</p>
+                  <p>descripcion{{this.description}}</p>
+                  <p>codigo:{{this.code}}</p>
+                  <p>categoria:{{this.category}}</p>
+                  <p>precio:{{this.price}}</p>
+                  <p>imagen:{{this.thumbnail}}</p>
+                  <p>cantidad:{{this.cantidad}}</p>
                 {{/each}}
               </p>
               <h3>SUBTOTAL ${{total}}</h3>
@@ -51,4 +57,83 @@
     ></script>
   </body>
 
+</html> --}}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles del Carrito</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <button
+            class="btn btn-primary mb-3"
+            onclick="location.href='/api/products'"
+          >VOLVER</button>
+          <div class="card">
+            <div class="card-header">
+              <h2 class="text-center">Carrito de Compras</h2>
+            </div>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Foto</th>
+                    <!-- Nueva columna para la foto -->
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each productos}}
+                    <tr>
+                      <td>{{this.title}}</td>
+                      <td>${{this.price}}</td>
+                      <td>{{this.cantidad}}</td>
+                      <td>${{this.subtotal}}</td>
+                      <td><img
+                          src="{{this.thumbnail}}"
+                          alt="Foto del Producto"
+                          style="max-width: 100px;"
+                        /></td>
+                      <!-- Muestra la foto del producto -->
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+              <h3 class="text-right">TOTAL: ${{total}}</h3>
+            </div>
+          </div>
+          {{#if continuar}}
+            <div class="text-center mt-3">
+              <form method="POST" action="/api/cart/{{userCart}}/purchase">
+                <input type="hidden" name="total" value="{{total}}" />
+                <button type="submit" class="btn btn-success">FINALIZAR COMPRA</button>
+              </form>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional) -->
+    <!-- You can include it if you need Bootstrap's JavaScript features -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    ></script>
+  </body>
 </html>

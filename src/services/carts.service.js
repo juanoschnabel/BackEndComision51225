@@ -12,6 +12,24 @@ class CartService {
       const buscarProductos = await productModel.find({
         _id: { $in: buscarCarrito.products.map((item) => item.id_prod) },
       });
+      const productosEnCarrito = [];
+      for (const item of buscarCarrito.products) {
+        const productoEncontrado = buscarProductos.find(
+          (producto) => producto._id.toString() === item.id_prod.toString()
+        );
+        if (productoEncontrado) {
+          const subtotal = item.quantity * productoEncontrado.price;
+
+          const productoConCantidad = {
+            ...productoEncontrado.toObject(),
+            cantidad: item.quantity,
+            subtotal: subtotal,
+          };
+
+          productosEnCarrito.push(productoConCantidad);
+        }
+      }
+
       let total = 0;
       for (const item of buscarCarrito.products) {
         const producto = buscarProductos.find(
@@ -22,10 +40,13 @@ class CartService {
           total += subtotal;
         }
       }
+      const totalParse = Number(total);
       res.render("carrito", {
         titulo: "Tu carrito",
         carrito: buscarCarrito.products,
+        productos: productosEnCarrito,
         total: total,
+        continuar: totalParse > 0,
         userCart,
       });
     } catch (error) {
@@ -49,10 +70,55 @@ class CartService {
       });
       await transporter.sendMail({
         to: email,
-        subject: "Ecommerce",
-        text: `Tu compra fue realizada con éxito!!
-Los productos que compraste son ${productosComprados}.El monto final de tu compra es de $${total}`,
+        subject: "Compra Exitosa en Ecommerce",
+        html: `
+          <html>
+            <head>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f5f5f5;
+                  padding: 20px;
+                }
+                .container {
+                  background-color: #ffffff;
+                  border-radius: 5px;
+                  padding: 20px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                  color: #333;
+                }
+                p {
+                  color: #555;
+                }
+                ul {
+                  list-style: none;
+                  padding: 0;
+                }
+                li {
+                  margin-bottom: 10px;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h1>¡Compra Exitosa en Ecommerce!</h1>
+                <p>Tu compra ha sido realizada con éxito. A continuación, se detallan los productos y el monto final de tu compra:</p>
+                <ul>
+                  <li><strong>Productos Comprados:</strong></li>
+                  ${productosComprados
+                    .map((producto) => `<li>${producto}</li>`)
+                    .join("")}
+                </ul>
+                <p><strong>Monto Total:</strong> $${total}</p>
+                <p>Gracias por comprar en Ecommerce.</p>
+              </div>
+            </body>
+          </html>
+        `,
       });
+
       await cartModel.updateOne({ _id: carrito._id }, { products: [] });
       res.render("ticket", {
         productosComprados,

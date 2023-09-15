@@ -97,6 +97,7 @@ class ProductsService {
           titulo: "HOME - TODOS LOS PRODUCTOS",
           products: products,
           user: profile,
+          verProductos: profile.role === "premium" || profile.role === "user",
           isAdmin: profile.role === "admin",
           isUser: profile.role === "user",
           isPremium: profile.role === "premium",
@@ -154,7 +155,7 @@ class ProductsService {
   }
   async getRealTimeProducts(req, res) {
     try {
-      const isAdmin = req.user.role
+      const isAdmin = req.user.role;
       const userId = req.user._id;
       let getProducts;
       if (req.user.role != "admin") {
@@ -192,7 +193,7 @@ class ProductsService {
       res.render("realTimeProducts", {
         titulo: "GESTIÓN DE PRODUCTOS GET",
         products: products,
-        isAdmin: isAdmin === "admin"
+        isAdmin: isAdmin === "admin",
       });
     } catch (error) {
       return error;
