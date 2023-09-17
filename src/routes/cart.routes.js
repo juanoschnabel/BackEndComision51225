@@ -7,9 +7,9 @@ const cartRouter = Router();
 cartRouter.get("/:cid/purchase", async (req, res) => {
   cartService.getPurchase(req, res);
 });
-// cartRouter.post("/:cid/purchase", async (req, res) => {
-//   cartService.getTicket(req, res);
-// });
+cartRouter.post("/:cid/purchase", async (req, res) => {
+  cartService.deleteProduct(req, res);
+});
 cartRouter.get("/:cid/:total/payment", async (req, res) => {
   createSession(req, res);
 });

@@ -45,7 +45,12 @@
                           alt="Foto del Producto"
                           style="max-width: 100px;"
                         /></td>
-                      <!-- Muestra la foto del producto -->
+                      <td>
+                          <form method="POST" action="/api/cart/{{this.cid}}/purchase">
+                            <input type="hidden" name="productId" value="{{this._id}}" />
+                            <button type="submit" class="btn btn-danger">ELIMINAR PRODUCTO DEL CARRITO</button>
+                          </form>
+                      </td>
                     </tr>
                   {{/each}}
                 </tbody>

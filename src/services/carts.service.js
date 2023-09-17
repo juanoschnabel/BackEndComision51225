@@ -4,6 +4,7 @@ import { productModel } from "../models/Products.js";
 import { userModel } from "../models/Users.js";
 import { ticketModel } from "../models/Ticket.js";
 import { transporter } from "../utils/nodemailer.js";
+import { mongoose } from "mongoose";
 class CartService {
   async getPurchase(req, res) {
     try {
@@ -25,6 +26,7 @@ class CartService {
             ...productoEncontrado.toObject(),
             cantidad: item.quantity,
             subtotal: subtotal,
+            cid,
           };
 
           productosEnCarrito.push(productoConCantidad);
@@ -41,6 +43,7 @@ class CartService {
           total += subtotal;
         }
       }
+      // console.log(productosEnCarrito);
       const totalParse = Number(total);
       res.render("carrito", {
         titulo: "Tu carrito",
@@ -129,6 +132,70 @@ class CartService {
       });
     } catch (error) {
       return error;
+    }
+  }
+
+  async deleteProduct(req, res) {
+    const product = req.body.productId;
+    const cid = req.params.cid;
+
+    try {
+      const carrito = await cartModel.findById(cid);
+      if (!carrito) {
+        return res.status(404).json({ message: "Carrito no encontrado" });
+      }
+      carrito.products = carrito.products.filter(
+        (item) => item.id_prod.toString() !== product
+      );
+      await carrito.save();
+      const buscarCarrito = await cartModel.findOne({ _id: cid });
+      const buscarProductos = await productModel.find({
+        _id: { $in: buscarCarrito.products.map((item) => item.id_prod) },
+      });
+      const productosEnCarrito = [];
+      for (const item of buscarCarrito.products) {
+        const productoEncontrado = buscarProductos.find(
+          (producto) => producto._id.toString() === item.id_prod.toString()
+        );
+        if (productoEncontrado) {
+          const subtotal = item.quantity * productoEncontrado.price;
+
+          const productoConCantidad = {
+            ...productoEncontrado.toObject(),
+            cantidad: item.quantity,
+            subtotal: subtotal,
+            cid,
+          };
+
+          productosEnCarrito.push(productoConCantidad);
+        }
+      }
+
+      let total = 0;
+      for (const item of buscarCarrito.products) {
+        const producto = buscarProductos.find(
+          (prod) => prod._id.toString() === item.id_prod.toString()
+        );
+        if (producto) {
+          const subtotal = producto.price * item.quantity;
+          total += subtotal;
+        }
+      }
+      const totalParse = Number(total);
+      res.render("carrito", {
+        titulo: "Tu carrito",
+        carrito: buscarCarrito.products,
+        productos: productosEnCarrito,
+        total: total,
+        continuar: totalParse > 0,
+        productosEnCarrito,
+        cid,
+      });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ message: "Error al eliminar el producto del carrito" });
     }
   }
   async getCart(req, res) {
