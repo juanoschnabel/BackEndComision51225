@@ -68,4 +68,20 @@ sessionRouter.get(
     res.redirect("/sessions/current");
   }
 );
+//google
+sessionRouter.get(
+  "/googleStrategy",
+  passport.authenticate("googleStrategy", { scope: ["profile", "email"] })
+);
+
+sessionRouter.get(
+  "/google",
+  passport.authenticate("googleStrategy", {
+    failureRedirect: "/api/products/errorLogin",
+  }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/sessions/current");
+  }
+);
 export default sessionRouter;

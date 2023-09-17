@@ -4,6 +4,7 @@ import { cartModel } from "../models/Cart.js";
 import { Strategy as LocalStrategy } from "passport-local";
 import { compareData, hashData } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import config from "../utils/config.js";
 import { transporter } from "../utils/nodemailer.js";
 import CustomError from "../services/errors/CustomError.js";
@@ -30,6 +31,7 @@ passport.use(
     }
   )
 );
+//REGISTRO
 passport.use(
   "register",
   new LocalStrategy(
@@ -116,7 +118,7 @@ passport.use(
     }
   )
 );
-
+//GITHUB
 passport.use(
   "githubSignup",
   new GithubStrategy(
@@ -172,6 +174,44 @@ passport.use(
       } catch (error) {
         done(error);
       }
+    }
+  )
+);
+
+//GOOGLE
+
+passport.use(
+  "googleStrategy",
+  new GoogleStrategy(
+    {
+      clientID: config.GOOGLE_CLIENT_ID,
+      clientSecret: config.GOOGLE_CLIENT_SECRET,
+      callbackURL: config.CALLBACK_URL_GOOGLE,
+    },
+    async (accesToken, refreshToken, profile, done) => {
+      const { given_name, family_name, email } = profile._json;
+      try {
+        const userBD = await userModel.findOne({ email });
+        if (userBD) {
+          return done(null, userBD);
+        }
+        const hashPassword = await hashData(process.env.HASH_PASSWORD_GITHUB);
+        const user = {
+          first_name: given_name,
+          last_name: family_name || "",
+          email: email,
+          password: hashPassword,
+        };
+        const newUserDB = await userModel.create(user);
+        const cart = new cartModel();
+        await cart.save();
+        newUserDB.cart = cart._id;
+        await newUserDB.save();
+        done(null, newUserDB);
+      } catch (error) {
+        done(error);
+      }
+      done(null, false);
     }
   )
 );

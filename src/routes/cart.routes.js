@@ -1,15 +1,18 @@
 //IMPORTACIONES
 import { Router } from "express";
 import { cartService } from "../services/carts.service.js";
-//RUTEO
+import { createSession } from "../controllers/payment.controller.js";
 const cartRouter = Router();
 // //RUTAS
 cartRouter.get("/:cid/purchase", async (req, res) => {
   cartService.getPurchase(req, res);
 });
 cartRouter.post("/:cid/purchase", async (req, res) => {
-  cartService.postPurchase(req, res);
+  // PaymentService.createPaymentIntent(req, res);
+  // cartService.getTicket(req, res);
+  createSession(req, res);
 });
+cartRouter.get("/ticket", async (req, res) => {});
 
 cartRouter.get("/", async (req, res) => {
   cartService.getCart(req, res);

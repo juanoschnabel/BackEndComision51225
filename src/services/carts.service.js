@@ -48,12 +48,13 @@ class CartService {
         total: total,
         continuar: totalParse > 0,
         userCart,
+        productosEnCarrito,
       });
     } catch (error) {
       return error;
     }
   }
-  async postPurchase(req, res) {
+  async getTicket(req, res) {
     try {
       const total = req.body.total;
       const email = req.user.email;
