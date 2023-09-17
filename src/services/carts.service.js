@@ -1,6 +1,7 @@
 //IMPORTACIONES
 import { cartModel } from "../models/Cart.js";
 import { productModel } from "../models/Products.js";
+import { userModel } from "../models/Users.js";
 import { ticketModel } from "../models/Ticket.js";
 import { transporter } from "../utils/nodemailer.js";
 class CartService {
@@ -49,6 +50,7 @@ class CartService {
         continuar: totalParse > 0,
         userCart,
         productosEnCarrito,
+        cid,
       });
     } catch (error) {
       return error;
@@ -56,9 +58,10 @@ class CartService {
   }
   async getTicket(req, res) {
     try {
-      const total = req.body.total;
-      const email = req.user.email;
-      const carrito = await cartModel.findById(req.user.cart.toString());
+      const total = req.params.total;
+      const cid = req.params.cid;
+      const user = await userModel.find({ cart: cid });
+      const carrito = await cartModel.findById({ _id: cid });
       const buscarProductos = await productModel.find({
         _id: { $in: carrito.products.map((item) => item.id_prod) },
       });
@@ -66,11 +69,11 @@ class CartService {
         (producto) => producto.title
       );
       await ticketModel.create({
-        amount: total,
-        purchaser: email,
+        amount: Number(total),
+        purchaser: user[0].email,
       });
       await transporter.sendMail({
-        to: email,
+        to: user[0].email,
         subject: "Compra Exitosa en Ecommerce",
         html: `
           <html>

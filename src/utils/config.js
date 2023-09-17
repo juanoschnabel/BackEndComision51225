@@ -14,4 +14,5 @@ export default {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   CALLBACK_URL_GOOGLE: process.env.CALLBACK_URL_GOOGLE,
+  STRIPE_KEY: process.env.STRIPE_KEY,
 };

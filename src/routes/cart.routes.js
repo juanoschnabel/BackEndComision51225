@@ -7,12 +7,15 @@ const cartRouter = Router();
 cartRouter.get("/:cid/purchase", async (req, res) => {
   cartService.getPurchase(req, res);
 });
-cartRouter.post("/:cid/purchase", async (req, res) => {
-  // PaymentService.createPaymentIntent(req, res);
-  // cartService.getTicket(req, res);
+// cartRouter.post("/:cid/purchase", async (req, res) => {
+//   cartService.getTicket(req, res);
+// });
+cartRouter.get("/:cid/:total/payment", async (req, res) => {
   createSession(req, res);
 });
-cartRouter.get("/ticket", async (req, res) => {});
+cartRouter.get("/:cid/:total/ticket", async (req, res) => {
+  cartService.getTicket(req, res);
+});
 
 cartRouter.get("/", async (req, res) => {
   cartService.getCart(req, res);
