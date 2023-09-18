@@ -199,6 +199,7 @@ class ProductsService {
   }
   async postRealTimeProducts(req, res) {
     try {
+      const isAdmin = req.user.role;
       const userId = req.user._id;
       async function productList(type, title) {
         const getProducts = await productModel.find({
@@ -233,6 +234,7 @@ class ProductsService {
           alertMessage: true,
           type: type,
           title: title,
+          isAdmin: isAdmin === "admin",
         });
       }
       try {
