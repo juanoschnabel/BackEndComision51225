@@ -129,6 +129,7 @@ class CartService {
       await cartModel.updateOne({ _id: carrito._id }, { products: [] });
       res.render("ticket", {
         productosComprados,
+        user: user[0].first_name,
       });
     } catch (error) {
       return error;
