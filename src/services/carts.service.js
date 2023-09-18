@@ -64,6 +64,8 @@ class CartService {
       const total = req.params.total;
       const cid = req.params.cid;
       const user = await userModel.find({ cart: cid });
+      const userName =
+        user[0] && user[0].first_name ? user[0].first_name.toUpperCase() : "";
       const carrito = await cartModel.findById({ _id: cid });
       const buscarProductos = await productModel.find({
         _id: { $in: carrito.products.map((item) => item.id_prod) },
@@ -129,7 +131,7 @@ class CartService {
       await cartModel.updateOne({ _id: carrito._id }, { products: [] });
       res.render("ticket", {
         productosComprados,
-        user: user[0].first_name,
+        user: userName,
       });
     } catch (error) {
       return error;
