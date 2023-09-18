@@ -2,7 +2,7 @@ import express from "express";
 import "./passport/passportStrategies.js";
 import productRouter from "./routes/product.routes.js";
 import sessionRouter from "./routes/session.router.js";
-import usersRouter from "./routes/users.router.js";
+// import usersRouter from "./routes/users.router.js";
 import createProductsWhitFacker from "./routes/fackerProducts.routes.js";
 import cartRouter from "./routes/cart.routes.js";
 import { __dirname } from "./config/path.js";
