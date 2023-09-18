@@ -5,7 +5,7 @@ const ticketSchema = new Schema({
   code: {
     type: String,
     unique: true,
-    default: generateCode, // Utilizar la función generateCode como valor por defecto
+    default: generateCode,
     required: true,
   },
   purchase_datetime: {
@@ -26,7 +26,6 @@ mongoose.set("strictQuery", false);
 
 export const ticketModel = model("Ticket", ticketSchema);
 
-// Función para generar un código aleatorio de 6 dígitos
 function generateCode() {
   const codeLength = 6;
   let code = "";

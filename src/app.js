@@ -80,10 +80,6 @@ app.use("/mockingproducts", createProductsWhitFacker);
 app.use("/", express.static(__dirname + "/public"));
 app.use(addLogger);
 app.use("/loggerTest", logger);
-// app.get("/logger", (req, res) => {
-//   req.logger.warning("Alerta");
-//   res.send({ message: " Estamos probando el logger" });
-// });
 app.get("/", async (req, res) => {
   res.render("sessions/login");
 });

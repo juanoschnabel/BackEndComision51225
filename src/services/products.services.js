@@ -53,7 +53,6 @@ class ProductsService {
   async addProduct(req, res) {
     try {
       async function productList(type, title, productId, quantity) {
-        // Reducir el stock del producto
         const updatedStock = buscarProducto.stock - quantity;
         await productModel.findOneAndUpdate(
           { _id: productId },
@@ -116,7 +115,6 @@ class ProductsService {
       );
       try {
         if (buscarCarrito && buscarProducto && resultado) {
-          // Si el producto ya existe en el carrito, actualiza la cantidad
           await cartModel.findOneAndUpdate(
             { _id: cart, "products.id_prod": id_prod },
             { $inc: { "products.$.quantity": quantity } }

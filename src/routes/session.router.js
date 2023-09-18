@@ -80,7 +80,6 @@ sessionRouter.get(
     failureRedirect: "/api/products/errorLogin",
   }),
   function (req, res) {
-    // Successful authentication, redirect home.
     res.redirect("/sessions/current");
   }
 );

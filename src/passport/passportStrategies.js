@@ -58,7 +58,6 @@ passport.use(
         const userNew = { ...req.body, password: hashPassword };
         const user = new userModel(userNew);
         await user.save();
-        // Crear un nuevo carrito y establecer la referencia en el usuario
         const cart = new cartModel();
         await cart.save();
         user.cart = cart._id;
@@ -132,7 +131,6 @@ passport.use(
       const { name, email, id, login } = profile._json;
       async function createUser(usuario) {
         const newUserDB = await userModel.create(usuario);
-        // Crear un nuevo carrito y establecer la referencia en el usuario
         const cart = new cartModel();
         await cart.save();
         newUserDB.cart = cart._id;
