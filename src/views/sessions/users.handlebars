@@ -5,10 +5,18 @@
     <title>Document</title>
   </head>
   <body>
-    <button
+    {{#if login}}
+        <button
       class="btn btn-primary"
       onclick="location.href='/sessions/current'"
     >VOLVER</button>
+    {{#else}}
+            <button
+      class="btn btn-primary"
+      onclick="location.href='/sessions/login'"
+    >VOLVER</button>
+    {{/if}}
+
     <div class="card-group d-flex">
       <div
         class="row row-cols-1 row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"

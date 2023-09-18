@@ -1,9 +1,9 @@
 import { userModel } from "../models/Users.js";
 
 class UserService {
-  async getUsers(req, res, boolean) {
+  async getUsers(req, res) {
     try {
-      const login = boolean;
+      const login = req.session.isLoggedIn === true;
       const getUsers = await userModel.find();
       const users = getUsers.map(
         ({ first_name, last_name, email, age, role, cart, _id }) => ({

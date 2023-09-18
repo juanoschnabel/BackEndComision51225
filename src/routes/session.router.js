@@ -23,7 +23,7 @@ sessionRouter.post(
   })
 );
 sessionRouter.get("/users", (req, res) => {
-  userService.getUsers(req, res, true);
+  userService.getUsers(req, res);
 });
 sessionRouter.post("/users", (req, res) => {
   userService.deleteUser(req, res);
