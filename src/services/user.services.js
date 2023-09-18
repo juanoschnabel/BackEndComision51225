@@ -1,8 +1,9 @@
 import { userModel } from "../models/Users.js";
 
 class UserService {
-  async getUsers(req, res) {
+  async getUsers(req, res, boolean) {
     try {
+      const login = boolean;
       const getUsers = await userModel.find();
       const users = getUsers.map(
         ({ first_name, last_name, email, age, role, cart, _id }) => ({
@@ -39,6 +40,7 @@ class UserService {
     );
     res.render("sessions/users", {
       users: users,
+      login,
     });
   }
 }

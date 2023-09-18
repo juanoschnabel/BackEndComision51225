@@ -30,16 +30,18 @@
               <p class="card-text">idUser:{{this._id}}
               </p>
             </div>
-            <div id="inputDelete">
-              <form action="/sessions/users" method="post">
-                <button
-                  class="btn btn-primary"
-                  type="submit"
-                  name="borrar"
-                  value="{{this._id}}"
-                >ELIMINAR USUARIO</button>
-              </form>
-            </div>
+            {{#if login}}
+              <div id="inputDelete">
+                <form action="/sessions/users" method="post">
+                  <button
+                    class="btn btn-primary"
+                    type="submit"
+                    name="borrar"
+                    value="{{this._id}}"
+                  >ELIMINAR USUARIO</button>
+                </form>
+              </div>
+            {{/if}}
           </div>
         {{/each}}
       </div>

@@ -11,6 +11,9 @@ sessionRouter.get("/register", (req, res) => {
 sessionRouter.get("/login", (req, res) => {
   res.render("sessions/login");
 });
+sessionRouter.get("/", (req, res) => {
+  res.render("sessions/login");
+});
 
 sessionRouter.post(
   "/login",
@@ -20,7 +23,7 @@ sessionRouter.post(
   })
 );
 sessionRouter.get("/users", (req, res) => {
-  userService.getUsers(req, res);
+  userService.getUsers(req, res, true);
 });
 sessionRouter.post("/users", (req, res) => {
   userService.deleteUser(req, res);
