@@ -2,7 +2,6 @@ import express from "express";
 import "./passport/passportStrategies.js";
 import productRouter from "./routes/product.routes.js";
 import sessionRouter from "./routes/session.router.js";
-// import usersRouter from "./routes/users.router.js";
 import createProductsWhitFacker from "./routes/fackerProducts.routes.js";
 import cartRouter from "./routes/cart.routes.js";
 import { __dirname } from "./config/path.js";
@@ -75,13 +74,16 @@ app.use(passport.session());
 //ROUTES
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(spec));
 app.use("/sessions", sessionRouter);
-// app.use("/api/users", usersRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/mockingproducts", createProductsWhitFacker);
 app.use("/", express.static(__dirname + "/public"));
 app.use(addLogger);
 app.use("/loggerTest", logger);
+// app.get("/logger", (req, res) => {
+//   req.logger.warning("Alerta");
+//   res.send({ message: " Estamos probando el logger" });
+// });
 app.get("/", async (req, res) => {
   res.render("sessions/login");
 });

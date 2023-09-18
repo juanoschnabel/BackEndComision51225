@@ -11,9 +11,6 @@ sessionRouter.get("/register", (req, res) => {
 sessionRouter.get("/login", (req, res) => {
   res.render("sessions/login");
 });
-sessionRouter.get("/", (req, res) => {
-  res.render("sessions/login");
-});
 
 sessionRouter.post(
   "/login",
@@ -23,7 +20,7 @@ sessionRouter.post(
   })
 );
 sessionRouter.get("/users", (req, res) => {
-  userService.getUsersAdmin(req, res);
+  userService.getUsers(req, res);
 });
 sessionRouter.post("/users", (req, res) => {
   userService.deleteUser(req, res);
@@ -83,6 +80,7 @@ sessionRouter.get(
     failureRedirect: "/api/products/errorLogin",
   }),
   function (req, res) {
+    // Successful authentication, redirect home.
     res.redirect("/sessions/current");
   }
 );
