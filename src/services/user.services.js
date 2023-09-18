@@ -18,6 +18,7 @@ class UserService {
       );
       res.render("sessions/users", {
         users: users,
+        login,
       });
     } catch (error) {
       return error;
