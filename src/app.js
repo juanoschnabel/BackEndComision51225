@@ -75,7 +75,7 @@ app.use(passport.session());
 //ROUTES
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(spec));
 app.use("/sessions", sessionRouter);
-app.use("/api/users", usersRouter);
+// app.use("/api/users", usersRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/mockingproducts", createProductsWhitFacker);
