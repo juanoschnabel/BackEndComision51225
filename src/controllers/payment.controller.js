@@ -16,8 +16,8 @@ export const createSession = async (req, res) => {
       },
     ],
     mode: "payment",
-    success_url: `http://localhost:8080/api/cart/${cid}/${total}/ticket`,
-    cancel_url: `http://localhost:8080/api/cart/${cid}/purchase`,
+    success_url: `https://backendcomision51225-production.up.railway.app/api/cart/${cid}/${total}/ticket`,
+    cancel_url: `https://backendcomision51225-production.up.railway.app/api/cart/${cid}/purchase`,
   });
   return res.redirect(session.url);
 };
