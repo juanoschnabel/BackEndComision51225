@@ -40,7 +40,7 @@ class UserService {
     await userModel.deleteOne({ _id: idUser });
     const getUsers = await userModel.find();
     const users = getUsers.map(
-      ({ first_name, last_name, email, age, role, cart, _id }) => ({
+      ({
         first_name,
         last_name,
         email,
@@ -48,6 +48,18 @@ class UserService {
         role,
         cart,
         _id,
+        user_creation_date,
+        last_login,
+      }) => ({
+        first_name,
+        last_name,
+        email,
+        age,
+        role,
+        cart,
+        _id,
+        user_creation_date,
+        last_login,
       })
     );
     res.render("sessions/users", {
@@ -55,10 +67,11 @@ class UserService {
     });
   }
   async deleteOldUsers(req, res) {
-    const twoHoursAgo = new Date();
-    twoHoursAgo.setHours(twoHoursAgo.getMinutes() - 2);
+    const now = DateTime.now();
+    // const twoHoursAgo = now.minus({ hours: 2 });
+    const twoMinutesAgo = now.minus({ minutes: 2 });
     await userModel.deleteMany({
-      last_login: { $lt: twoHoursAgo },
+      last_login: { $lt: twoMinutesAgo },
     });
     const getUsers = await userModel.find();
     const users = getUsers.map(
