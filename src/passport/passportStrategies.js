@@ -25,9 +25,7 @@ passport.use(
         if (!isPasswordValid) {
           return done(null, false);
         }
-        const newLogin = DateTime.now().setZone(
-          "America/Argentina/Buenos_Aires"
-        );
+        const newLogin = DateTime.now().setZone("America/Los_Angeles");
         await userModel.findByIdAndUpdate(user._id, {
           last_login: newLogin,
         });
