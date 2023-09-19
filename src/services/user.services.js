@@ -72,7 +72,6 @@ class UserService {
   async deleteUser(req, res) {
     const idUser = req.body.borrar;
     const user = await userModel.find({ _id: idUser });
-    await userModel.deleteOne({ _id: idUser });
     await transporter.sendMail({
       to: user.email,
       subject: "Eliminacion de usuario",
@@ -116,6 +115,7 @@ class UserService {
         </html>
       `,
     });
+    await userModel.deleteOne({ _id: idUser });
     const getUsers = await userModel.find();
     const users = getUsers.map(
       ({
