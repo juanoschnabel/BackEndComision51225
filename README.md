@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-<title>MODELO DE ECOMMERCE</title>
 <h1>Plantilla Modelo de Ecommerce</h1>
 <p><strong>Descripción breve:</strong> Es un modelo de ecommerce con todas las funcionalidadaes básicas. Cuenta con tres tipos de usuarios distintos con funciones distintas entre si. Utiliza una base de datos de MongoDB.</p>
 <h2>Requisitos Previos</h2>
