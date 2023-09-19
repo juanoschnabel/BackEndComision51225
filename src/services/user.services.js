@@ -89,8 +89,9 @@ class UserService {
       );
     }
     if (modificarAdmin) {
+      const date = new Date(modificarAdmin);
       await userModel.findOneAndUpdate(
-        { user_creation_date: modificarAdmin },
+        { user_creation_date: date },
         { $set: { role: "admin" } },
         { new: true }
       );
