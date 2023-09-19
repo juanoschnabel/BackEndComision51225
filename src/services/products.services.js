@@ -251,7 +251,7 @@ class ProductsService {
           const product = await productModel.find({ _id: productId });
           const { title, _id, userId } = product;
           const user = await userModel.find({ _id: userId });
-          const { email, first_name, last_name } = user[0];
+          const { email, first_name, last_name } = user;
           await productModel.deleteOne({ _id: productId });
           await transporter.sendMail({
             to: email,
