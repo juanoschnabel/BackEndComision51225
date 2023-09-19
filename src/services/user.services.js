@@ -71,7 +71,51 @@ class UserService {
   }
   async deleteUser(req, res) {
     const idUser = req.body.borrar;
+    const user = await userModel.find({ _id: idUser });
     await userModel.deleteOne({ _id: idUser });
+    await transporter.sendMail({
+      to: user.email,
+      subject: "Eliminacion de usuario",
+      html: `
+        <html>
+          <head>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
+                padding: 20px;
+              }
+              .container {
+                background-color: #ffffff;
+                border-radius: 5px;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              }
+              h1 {
+                color: #333;
+              }
+              p {
+                color: #555;
+              }
+              ul {
+                list-style: none;
+                padding: 0;
+              }
+              li {
+                margin-bottom: 10px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Tu usuario fue eliminado de la plataforma</h1>
+              <p>Tu usuario fue eliminado de la plataforma por un administrador. Puedes volver a registrarte cuando quieras!</p>
+              <p>Te esperamos de nuevo!</p>
+            </div>
+          </body>
+        </html>
+      `,
+    });
     const getUsers = await userModel.find();
     const users = getUsers.map(
       ({
@@ -102,12 +146,11 @@ class UserService {
   }
   async deleteOldUsers(req, res) {
     const now = DateTime.now();
-    // const twoHoursAgo = now.minus({ hours: 2 });
-    const twoMinutesAgo = now.minus({ minutes: 2 });
+    const twoHoursAgo = now.minus({ hours: 2 });
+    // const twoMinutesAgo = now.minus({ minutes: 2 });
     const usersToDelete = await userModel.find({
-      last_login: { $lt: twoMinutesAgo },
+      last_login: { $lt: twoHoursAgo },
     });
-    // Itera sobre los usuarios y elimínalos uno por uno
     for (const user of usersToDelete) {
       await userModel.findByIdAndRemove(user._id);
       await transporter.sendMail({
