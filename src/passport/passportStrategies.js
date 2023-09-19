@@ -9,6 +9,7 @@ import config from "../utils/config.js";
 import { transporter } from "../utils/nodemailer.js";
 import CustomError from "../services/errors/CustomError.js";
 import { EErrors } from "../services/errors/enum.js";
+import { DateTime } from "luxon";
 //estrategia passport-local (username, password)
 passport.use(
   "login",
@@ -146,9 +147,10 @@ passport.use(
         if (email === null) {
           const userBD = await userModel.findOne({ email: id.toString() });
           if (userBD) {
-            const newLogin = new Date().toLocaleString("en-US", {
-              timeZone: "America/Argentina/Buenos_Aires",
-            });
+            const newLogin = DateTime.now().setZone(
+              "America/Argentina/Buenos_Aires"
+            );
+
             await userModel.findByIdAndUpdate(userBD._id, {
               last_login: newLogin,
             });
@@ -168,9 +170,10 @@ passport.use(
         } else {
           const userBD = await userModel.findOne({ email });
           if (userBD) {
-            const newLogin = new Date().toLocaleString("en-US", {
-              timeZone: "America/Argentina/Buenos_Aires",
-            });
+            const newLogin = DateTime.now().setZone(
+              "America/Argentina/Buenos_Aires"
+            );
+
             await userModel.findByIdAndUpdate(userBD._id, {
               last_login: newLogin,
             });
