@@ -156,7 +156,7 @@ passport.use(
               process.env.HASH_PASSWORD_GITHUB
             );
             const user = {
-              first_name: login,
+              first_name: "usuario",
               last_name: " ",
               email: id.toString(),
               password: hashPassword,
@@ -174,8 +174,8 @@ passport.use(
           }
           const hashPassword = await hashData(process.env.HASH_PASSWORD_GITHUB);
           const user = {
-            first_name: name.split(" ")[0] || login,
-            last_name: name.split(" ")[1] || " ",
+            first_name: "usuario",
+            last_name: " ",
             email: email,
             password: hashPassword,
           };
