@@ -25,9 +25,9 @@ sessionRouter.get("/users", (req, res) => {
 sessionRouter.post("/users", (req, res) => {
   userService.deleteUser(req, res);
 });
-sessionRouter.delete("/users", (req, res) => {
-  userService.deleteOldUsers(req, res);
-});
+// sessionRouter.delete("/users", (req, res) => {
+//   userService.deleteOldUsers(req, res);
+// });
 sessionRouter.get("/current", (req, res) => {
   const { first_name, last_name, email, age, role, cart } = req.user;
   res.render("sessions/current", {
