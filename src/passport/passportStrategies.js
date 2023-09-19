@@ -156,9 +156,9 @@ passport.use(
               process.env.HASH_PASSWORD_GITHUB
             );
             const user = {
-              first_name: "usuario",
+              first_name: login,
               last_name: " ",
-              email: id.toString(),
+              email: id.toString() + "@gmail.com",
               password: hashPassword,
             };
             createUser(user);
@@ -174,7 +174,7 @@ passport.use(
           }
           const hashPassword = await hashData(process.env.HASH_PASSWORD_GITHUB);
           const user = {
-            first_name: "usuario",
+            first_name: login,
             last_name: " ",
             email: email,
             password: hashPassword,
