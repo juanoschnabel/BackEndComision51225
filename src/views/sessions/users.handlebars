@@ -49,18 +49,33 @@
                 <button
                   class="btn btn-primary"
                   type="submit"
-                  name="modificar"
+                  name="modificarUser"
                   value="{{this.email}}"
                 >MODIFICAR ROL A USER</button>
               </form>
             </div>
+            <div id="inputDelete">
+              <form action="/sessions/users" method="post">
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  name="modificarPremium"
+                  value="{{this.cart}}"
+                >MODIFICAR ROL A PREMIUM</button>
+              </form>
+            </div>
+            <div id="inputDelete">
+              <form action="/sessions/users" method="post">
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  name="modificarAdmin"
+                  value="{{this.user_creation_date}}"
+                >MODIFICAR ROL A ADMIN</button>
+              </form>
+            </div>
           </div>
         {{/each}}
-        {{! <form action="/sessions/users" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" class="btn btn-primary">Eliminar Usuarios
-            Vencidos</button>
-        </form> }}
       </div>
     </div>
   </body>

@@ -71,11 +71,27 @@ class UserService {
   }
   async deleteUser(req, res) {
     const idUser = req.body.borrar;
-    const modificar = req.body.modificar;
-    if (modificar) {
+    const modificarUser = req.body.modificarUser;
+    const modificarPremium = req.body.modificarPremium;
+    const modificarAdmin = req.body.modificarAdmin;
+    if (modificarUser) {
       await userModel.findOneAndUpdate(
-        { email: modificar },
+        { email: modificarUser },
         { $set: { role: "user" } },
+        { new: true }
+      );
+    }
+    if (modificarPremium) {
+      await userModel.findOneAndUpdate(
+        { cart: modificarPremium },
+        { $set: { role: "premium" } },
+        { new: true }
+      );
+    }
+    if (modificarAdmin) {
+      await userModel.findOneAndUpdate(
+        { user_creation_date: modificarAdmin },
+        { $set: { role: "admin" } },
         { new: true }
       );
     }
