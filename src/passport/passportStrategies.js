@@ -25,7 +25,7 @@ passport.use(
         if (!isPasswordValid) {
           return done(null, false);
         }
-        const newLogin = DateTime.now().setZone("America/Los_Angeles");
+        const newLogin = DateTime.now();
         await userModel.findByIdAndUpdate(user._id, {
           last_login: newLogin,
         });
@@ -140,17 +140,13 @@ passport.use(
         await cart.save();
         newUserDB.cart = cart._id;
         await newUserDB.save();
-
         done(null, newUserDB);
       }
       try {
         if (email === null) {
           const userBD = await userModel.findOne({ email: id.toString() });
           if (userBD) {
-            const newLogin = DateTime.now().setZone(
-              "America/Argentina/Buenos_Aires"
-            );
-
+            const newLogin = DateTime.now();
             await userModel.findByIdAndUpdate(userBD._id, {
               last_login: newLogin,
             });
@@ -170,10 +166,7 @@ passport.use(
         } else {
           const userBD = await userModel.findOne({ email });
           if (userBD) {
-            const newLogin = DateTime.now().setZone(
-              "America/Argentina/Buenos_Aires"
-            );
-
+            const newLogin = DateTime.now();
             await userModel.findByIdAndUpdate(userBD._id, {
               last_login: newLogin,
             });
@@ -186,6 +179,50 @@ passport.use(
             email: email,
             password: hashPassword,
           };
+          await transporter.sendMail({
+            to: user.email,
+            subject: "Registro Exitoso en Ecommerce",
+            html: `
+              <html>
+                <head>
+                  <style>
+                    /* Agrega estilos CSS aquí para dar formato al correo electrónico */
+                    body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f5f5f5;
+                      padding: 20px;
+                    }
+                    .container {
+                      background-color: #ffffff;
+                      border-radius: 5px;
+                      padding: 20px;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+                    h1 {
+                      color: #333;
+                    }
+                    p {
+                      color: #555;
+                    }
+                  </style>
+                </head>
+                <body>
+                  <div class="container">
+                    <h1>¡Registro Exitoso en Ecommerce!</h1>
+                    <p>Hola ${user.first_name} ${user.last_name},</p>
+                    <p>Tu usuario ha sido registrado con éxito en nuestro sistema.</p>
+                    <p>A continuación, encontrarás los detalles de tu registro:</p>
+                    <ul>
+                      <li><strong>Email:</strong> ${user.email}</li>
+                      <li><strong>Contraseña por defecto:</strong> 1234</li>
+                    </ul>
+                    <p>No compartas esta información con nadie y mantenla segura.</p>
+                    <p>Gracias por unirte a Ecommerce.</p>
+                  </div>
+                </body>
+              </html>
+            `,
+          });
           createUser(user);
         }
       } catch (error) {
@@ -210,9 +247,7 @@ passport.use(
       try {
         const userBD = await userModel.findOne({ email });
         if (userBD) {
-          const newLogin = DateTime.now().setZone(
-            "America/Argentina/Buenos_Aires"
-          );
+          const newLogin = DateTime.now();
           await userModel.findByIdAndUpdate(userBD._id, {
             last_login: newLogin,
           });
@@ -230,6 +265,50 @@ passport.use(
         await cart.save();
         newUserDB.cart = cart._id;
         await newUserDB.save();
+        await transporter.sendMail({
+          to: user.email,
+          subject: "Registro Exitoso en Ecommerce",
+          html: `
+            <html>
+              <head>
+                <style>
+                  /* Agrega estilos CSS aquí para dar formato al correo electrónico */
+                  body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f5f5f5;
+                    padding: 20px;
+                  }
+                  .container {
+                    background-color: #ffffff;
+                    border-radius: 5px;
+                    padding: 20px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  }
+                  h1 {
+                    color: #333;
+                  }
+                  p {
+                    color: #555;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <h1>¡Registro Exitoso en Ecommerce!</h1>
+                  <p>Hola ${user.first_name} ${user.last_name},</p>
+                  <p>Tu usuario ha sido registrado con éxito en nuestro sistema.</p>
+                  <p>A continuación, encontrarás los detalles de tu registro:</p>
+                  <ul>
+                    <li><strong>Email:</strong> ${user.email}</li>
+                    <li><strong>Contraseña por defecto:</strong> 1234</li>
+                  </ul>
+                  <p>No compartas esta información con nadie y mantenla segura.</p>
+                  <p>Gracias por unirte a Ecommerce.</p>
+                </div>
+              </body>
+            </html>
+          `,
+        });
         done(null, newUserDB);
       } catch (error) {
         done(error);
