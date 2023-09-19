@@ -32,6 +32,14 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "carts",
   },
+  user_creation_date: {
+    type: Date,
+    default: Date.now,
+  },
+  last_login: {
+    type: Date,
+    default: Date.now,
+  },
 });
 mongoose.set("strictQuery", false);
 

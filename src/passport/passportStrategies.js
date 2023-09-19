@@ -24,6 +24,8 @@ passport.use(
         if (!isPasswordValid) {
           return done(null, false);
         }
+        const newLogin = new Date();
+        await userModel.findByIdAndUpdate(user._id, { last_login: newLogin });
         done(null, user);
       } catch (error) {
         done(error);
@@ -142,6 +144,10 @@ passport.use(
         if (email === null) {
           const userBD = await userModel.findOne({ email: id.toString() });
           if (userBD) {
+            const newLogin = new Date();
+            await userModel.findByIdAndUpdate(userBD._id, {
+              last_login: newLogin,
+            });
             return done(null, userBD);
           } else {
             const hashPassword = await hashData(
@@ -158,6 +164,10 @@ passport.use(
         } else {
           const userBD = await userModel.findOne({ email });
           if (userBD) {
+            const newLogin = new Date();
+            await userModel.findByIdAndUpdate(userBD._id, {
+              last_login: newLogin,
+            });
             return done(null, userBD);
           }
           const hashPassword = await hashData(process.env.HASH_PASSWORD_GITHUB);
@@ -191,6 +201,10 @@ passport.use(
       try {
         const userBD = await userModel.findOne({ email });
         if (userBD) {
+          const newLogin = new Date();
+          await userModel.findByIdAndUpdate(userBD._id, {
+            last_login: newLogin,
+          });
           return done(null, userBD);
         }
         const hashPassword = await hashData(process.env.HASH_PASSWORD_GITHUB);
