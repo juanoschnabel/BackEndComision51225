@@ -1,5 +1,6 @@
 import { productModel } from "../models/Products.js";
 import { cartModel } from "../models/Cart.js";
+import { transporter } from "../utils/nodemailer.js";
 
 class ProductsService {
   async getProducts(req, res) {
@@ -199,6 +200,7 @@ class ProductsService {
   }
   async postRealTimeProducts(req, res) {
     try {
+      const { first_name, last_name, email } = req.user;
       const isAdmin = req.user.role;
       const userId = req.user._id;
       async function productList(type, title) {
@@ -240,7 +242,49 @@ class ProductsService {
       try {
         if (req.body.borrar) {
           const productId = req.body.borrar;
+          const product = await productModel.find({ _id: productId });
+          const { title, _id } = product;
           await productModel.deleteOne({ _id: productId });
+          await transporter.sendMail({
+            to: email,
+            subject: "Producto Eliminado",
+            html: `
+              <html>
+                <head>
+                  <style>
+                    /* Agrega estilos CSS aquí para dar formato al correo electrónico */
+                    body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f5f5f5;
+                      padding: 20px;
+                    }
+                    .container {
+                      background-color: #ffffff;
+                      border-radius: 5px;
+                      padding: 20px;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+                    h1 {
+                      color: #333;
+                    }
+                    p {
+                      color: #555;
+                    }
+                  </style>
+                </head>
+                <body>
+                  <div class="container">
+                    <h1>¡Producto Eliminado!</h1>
+                    <p>Hola ${first_name} ${last_name},</p>
+                    <p>Un producto tuyo fue eliminado de nuestro catálogo!.</p>
+                    <p>Se trata de ${title}.</p>
+                    <p>Su ID era: ${_id}.</p>
+                  </div>
+                </body>
+              </html>
+            `,
+          });
+
           productList("success", "PRODUCTO ELIMINADO EXITOSAMENTE");
         } else {
           const {

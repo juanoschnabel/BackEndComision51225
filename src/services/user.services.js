@@ -224,8 +224,6 @@ class UserService {
       });
     }
     const getUsers = await userModel.find();
-    console.log(getUsers);
-    console.log(usersToDelete);
     const users = getUsers.map(
       ({
         first_name,
