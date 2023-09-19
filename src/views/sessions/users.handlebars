@@ -44,6 +44,16 @@
                 >ELIMINAR USUARIO</button>
               </form>
             </div>
+            <div id="inputDelete">
+              <form action="/sessions/users" method="post">
+                <button
+                  class="btn btn-primary"
+                  type="submit"
+                  name="modificar"
+                  value="{{this.email}}"
+                >MODIFICAR ROL A USER</button>
+              </form>
+            </div>
           </div>
         {{/each}}
         {{! <form action="/sessions/users" method="post">

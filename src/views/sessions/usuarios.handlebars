@@ -9,17 +9,15 @@
       class="btn btn-primary"
       onclick="location.href='/sessions/login'"
     >VOLVER</button>
+    <form action="/api/users/delete" method="post">
+      <input type="hidden" name="_method" value="DELETE" />
+      <button type="submit" class="btn btn-danger">Eliminar Usuarios Vencidos</button>
+    </form>
     <div class="card-group d-flex">
       <div
         class="row row-cols-1 row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
         id="cards"
       >
-        <form action="/api/users/delete" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" class="btn btn-danger">Eliminar Usuarios
-            Vencidos</button>
-        </form>
-
         {{#each users}}
           <div class="card">
             <div class="card-body">

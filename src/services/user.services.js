@@ -71,51 +71,59 @@ class UserService {
   }
   async deleteUser(req, res) {
     const idUser = req.body.borrar;
-    const user = await userModel.find({ _id: idUser });
-    await transporter.sendMail({
-      to: user[0].email,
-      subject: "Eliminacion de usuario",
-      html: `
-        <html>
-          <head>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                background-color: #f5f5f5;
-                padding: 20px;
-              }
-              .container {
-                background-color: #ffffff;
-                border-radius: 5px;
-                padding: 20px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-              }
-              h1 {
-                color: #333;
-              }
-              p {
-                color: #555;
-              }
-              ul {
-                list-style: none;
-                padding: 0;
-              }
-              li {
-                margin-bottom: 10px;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <h1>Tu usuario fue eliminado de la plataforma</h1>
-              <p>Tu usuario fue eliminado de la plataforma por un administrador. Puedes volver a registrarte cuando quieras!</p>
-              <p>Te esperamos de nuevo!</p>
-            </div>
-          </body>
-        </html>
-      `,
-    });
-    await userModel.deleteOne({ _id: idUser });
+    const modificar = req.body.modificar;
+    if (modificar) {
+      const user = await userModel.find({ email: modificar });
+      user.role = "user";
+      await user.save();
+    }
+    if (idUser) {
+      const user = await userModel.find({ _id: idUser });
+      await transporter.sendMail({
+        to: user[0].email,
+        subject: "Eliminacion de usuario",
+        html: `
+          <html>
+            <head>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f5f5f5;
+                  padding: 20px;
+                }
+                .container {
+                  background-color: #ffffff;
+                  border-radius: 5px;
+                  padding: 20px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                  color: #333;
+                }
+                p {
+                  color: #555;
+                }
+                ul {
+                  list-style: none;
+                  padding: 0;
+                }
+                li {
+                  margin-bottom: 10px;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h1>Tu usuario fue eliminado de la plataforma</h1>
+                <p>Tu usuario fue eliminado de la plataforma por un administrador. Puedes volver a registrarte cuando quieras!</p>
+                <p>Te esperamos de nuevo!</p>
+              </div>
+            </body>
+          </html>
+        `,
+      });
+      await userModel.deleteOne({ _id: idUser });
+    }
     const getUsers = await userModel.find();
     const users = getUsers.map(
       ({
