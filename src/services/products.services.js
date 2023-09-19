@@ -204,9 +204,15 @@ class ProductsService {
       const isAdmin = req.user.role;
       const userId = req.user._id;
       async function productList(type, title) {
-        const getProducts = await productModel.find({
-          userId: { $eq: userId },
-        });
+        let getProducts;
+        if (isAdmin === "premium") {
+          getProducts = await productModel.find({
+            userId: { $eq: userId },
+          });
+        }
+        if (isAdmin === "admin") {
+          getProducts = await productModel.find();
+        }
         const products = getProducts.map(
           ({
             title,
@@ -245,10 +251,10 @@ class ProductsService {
           const product = await productModel.find({ _id: productId });
           const { title, _id, userId } = product;
           const user = await userModel.find({ _id: userId });
-          const emailUser = user[0].email;
+          const { email, first_name, last_name } = user[0];
           await productModel.deleteOne({ _id: productId });
           await transporter.sendMail({
-            to: emailUser,
+            to: email,
             subject: "Producto Eliminado",
             html: `
               <html>
