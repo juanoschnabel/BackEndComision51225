@@ -1,6 +1,7 @@
 import { productModel } from "../models/Products.js";
 import { cartModel } from "../models/Cart.js";
 import { transporter } from "../utils/nodemailer.js";
+import { userModel } from "../models/Users.js";
 
 class ProductsService {
   async getProducts(req, res) {
@@ -200,7 +201,6 @@ class ProductsService {
   }
   async postRealTimeProducts(req, res) {
     try {
-      const { first_name, last_name, email } = req.user;
       const isAdmin = req.user.role;
       const userId = req.user._id;
       async function productList(type, title) {
@@ -243,10 +243,12 @@ class ProductsService {
         if (req.body.borrar) {
           const productId = req.body.borrar;
           const product = await productModel.find({ _id: productId });
-          const { title, _id } = product;
+          const { title, _id, userId } = product;
+          const user = await userModel.find({ _id: userId });
+          const emailUser = user[0].email;
           await productModel.deleteOne({ _id: productId });
           await transporter.sendMail({
-            to: email,
+            to: emailUser,
             subject: "Producto Eliminado",
             html: `
               <html>
