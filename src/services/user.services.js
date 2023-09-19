@@ -73,7 +73,7 @@ class UserService {
     const idUser = req.body.borrar;
     const user = await userModel.find({ _id: idUser });
     await transporter.sendMail({
-      to: user.email,
+      to: user[0].email,
       subject: "Eliminacion de usuario",
       html: `
         <html>
