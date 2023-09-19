@@ -4,8 +4,8 @@ const usersRouter = Router();
 usersRouter.get("/", (req, res) => {
   userService.traerUsuariosSinBorrar(req, res);
 });
-// usersRouter.delete("/", (req, res) => {
-//   userService.deleteOldUsers(req, res);
-// });
+usersRouter.delete("/delete", (req, res) => {
+  userService.deleteOldUsers(req, res);
+});
 
 export default usersRouter;

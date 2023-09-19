@@ -5,15 +5,17 @@
     <title>Document</title>
   </head>
   <body>
-    {{! <button
-      class="btn btn-primary"
-      onclick="location.href='/sessions/current'"
-    >VOLVER</button> }}
     <div class="card-group d-flex">
       <div
         class="row row-cols-1 row-cols-1 row-cols-md-3 row-cols-lg-4 col-sm-12"
         id="cards"
       >
+        <form action="/api/users/delete" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit" class="btn btn-danger">Eliminar Usuarios
+            Vencidos</button>
+        </form>
+
         {{#each users}}
           <div class="card">
             <div class="card-body">
@@ -34,23 +36,8 @@
               <p class="card-text">Último ingreso a la plataforma:{{this.last_login}}
               </p>
             </div>
-            {{!-- <div id="inputDelete">
-              <form action="/sessions/users" method="post">
-                <button
-                  class="btn btn-primary"
-                  type="submit"
-                  name="borrar"
-                  value="{{this._id}}"
-                >ELIMINAR USUARIO</button>
-              </form>
-            </div> --}}
           </div>
         {{/each}}
-        {{! <form action="/sessions/users" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" class="btn btn-primary">Eliminar Usuarios
-            Vencidos</button>
-        </form> }}
       </div>
     </div>
   </body>
