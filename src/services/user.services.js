@@ -73,9 +73,11 @@ class UserService {
     const idUser = req.body.borrar;
     const modificar = req.body.modificar;
     if (modificar) {
-      const user = await userModel.find({ email: modificar });
-      user.role = "user";
-      await user.save();
+      await userModel.findOneAndUpdate(
+        { email: modificar },
+        { $set: { role: "user" } },
+        { new: true }
+      );
     }
     if (idUser) {
       const user = await userModel.find({ _id: idUser });
