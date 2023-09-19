@@ -1,5 +1,6 @@
 import { userModel } from "../models/Users.js";
 import { DateTime } from "luxon";
+import { transporter } from "../utils/nodemailer.js";
 
 class UserService {
   async getUsers(req, res) {
@@ -109,6 +110,49 @@ class UserService {
     // Itera sobre los usuarios y elimínalos uno por uno
     for (const user of usersToDelete) {
       await userModel.findByIdAndRemove(user._id);
+      await transporter.sendMail({
+        to: user.email,
+        subject: "Eliminacion de usuario",
+        html: `
+          <html>
+            <head>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f5f5f5;
+                  padding: 20px;
+                }
+                .container {
+                  background-color: #ffffff;
+                  border-radius: 5px;
+                  padding: 20px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                  color: #333;
+                }
+                p {
+                  color: #555;
+                }
+                ul {
+                  list-style: none;
+                  padding: 0;
+                }
+                li {
+                  margin-bottom: 10px;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h1>Tu usuario fue eliminado de la plataforma</h1>
+                <p>Tu usuario fue eliminado de la plataforma por su inactividad. Puedes volver a registrarte cuando quieras!</p>
+                <p>Te esperamos de nuevo!</p>
+              </div>
+            </body>
+          </html>
+        `,
+      });
     }
     const getUsers = await userModel.find();
     console.log(getUsers);
