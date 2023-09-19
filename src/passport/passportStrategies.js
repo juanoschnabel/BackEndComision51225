@@ -25,10 +25,12 @@ passport.use(
         if (!isPasswordValid) {
           return done(null, false);
         }
-        const newLogin = new Date().toLocaleString("en-US", {
-          timeZone: "America/Argentina/Buenos_Aires",
+        const newLogin = DateTime.now().setZone(
+          "America/Argentina/Buenos_Aires"
+        );
+        await userModel.findByIdAndUpdate(user._id, {
+          last_login: newLogin,
         });
-        await userModel.findByIdAndUpdate(user._id, { last_login: newLogin });
         done(null, user);
       } catch (error) {
         done(error);
@@ -210,9 +212,9 @@ passport.use(
       try {
         const userBD = await userModel.findOne({ email });
         if (userBD) {
-          const newLogin = new Date().toLocaleString("en-US", {
-            timeZone: "America/Argentina/Buenos_Aires",
-          });
+          const newLogin = DateTime.now().setZone(
+            "America/Argentina/Buenos_Aires"
+          );
           await userModel.findByIdAndUpdate(userBD._id, {
             last_login: newLogin,
           });
