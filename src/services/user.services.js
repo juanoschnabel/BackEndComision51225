@@ -70,10 +70,16 @@ class UserService {
     const now = DateTime.now();
     // const twoHoursAgo = now.minus({ hours: 2 });
     const twoMinutesAgo = now.minus({ minutes: 2 });
-    await userModel.deleteMany({
+    const usersToDelete = await userModel.find({
       last_login: { $lt: twoMinutesAgo },
     });
+    // Itera sobre los usuarios y elimínalos uno por uno
+    for (const user of usersToDelete) {
+      await userModel.findByIdAndRemove(user._id);
+    }
     const getUsers = await userModel.find();
+    console.log(getUsers);
+    console.log(usersToDelete);
     const users = getUsers.map(
       ({
         first_name,
