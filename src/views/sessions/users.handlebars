@@ -29,6 +29,10 @@
               </p>
               <p class="card-text">idUser:{{this._id}}
               </p>
+              <p class="card-text">Fecha de creación del usuario:{{this.user_creation_date}}
+              </p>
+              <p class="card-text">Último ingreso a la plataforma:{{this.last_login}}
+              </p>
             </div>
             <div id="inputDelete">
               <form action="/sessions/users" method="post">
@@ -42,6 +46,11 @@
             </div>
           </div>
         {{/each}}
+        <form action="/sessions/users" method="delete">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit" class="btn btn-primary">Eliminar Usuarios
+            Vencidos</button>
+        </form>
       </div>
     </div>
   </body>
