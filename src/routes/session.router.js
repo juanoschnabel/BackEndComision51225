@@ -29,7 +29,16 @@ sessionRouter.post("/users", (req, res) => {
 //   userService.deleteOldUsers(req, res);
 // });
 sessionRouter.get("/current", (req, res) => {
-  const { first_name, last_name, email, age, role, cart } = req.user;
+  const {
+    first_name,
+    last_name,
+    email,
+    age,
+    role,
+    cart,
+    last_login,
+    user_creation_date,
+  } = req.user;
   res.render("sessions/current", {
     name: first_name,
     lastName: last_name,
@@ -38,6 +47,8 @@ sessionRouter.get("/current", (req, res) => {
     rol: role,
     isAdmin: role != "admin",
     cart: cart,
+    last_login,
+    user_creation_date,
   });
 });
 //register con pasport

@@ -150,8 +150,7 @@ passport.use(
             await userModel.findByIdAndUpdate(userBD._id, {
               last_login: newLogin,
             });
-            const user = await userModel.find({ _id: userBD._id });
-            return done(null, user);
+            return done(null, userBD);
           } else {
             const hashPassword = await hashData(
               process.env.HASH_PASSWORD_GITHUB
@@ -171,8 +170,7 @@ passport.use(
             await userModel.findByIdAndUpdate(userBD._id, {
               last_login: newLogin,
             });
-            const user = await userModel.find({ _id: userBD._id });
-            return done(null, user);
+            return done(null, userBD);
           }
           const hashPassword = await hashData(process.env.HASH_PASSWORD_GITHUB);
           const user = {
