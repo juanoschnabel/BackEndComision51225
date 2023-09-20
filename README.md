@@ -52,6 +52,8 @@
 <p>Puedes realizar el proceso de login de manera manual, completando el formulario que se encuentra aquí ("https://backendcomision51225-production.up.railway.app/sessions/login").</p>
 <h4>Login y Registro de terceros</h4>
 <p>Puedes realizar el proceso de login y registro de manera automática, dandole click a los botones correspondientes que se encuentran aquí ("https://backendcomision51225-production.up.railway.app/sessions/login"). Este proceso te creará un usuario en caso de que no lo tengas o te logueará en caso de que ya exista un usuario creado en nuestra base de datos.</p>
+<h2>Carrito de compras</h2>
+<p>El carrito de compras se genera automáticamente con la creación de cada usuario. Además, cada usuario puede eliminar productos añadidos allí. Cuando el proceso de compra se realiza exitosamente el carrito se vacía y queda listo para una nueva compra.</p>
 <h2>Uso</h2>
 <p>La aplicación tiene una vista intuitiva que permite realizar un proceso clásico de compra de manera sensilla y efectiva. El proceso se realiza de manera completa, realizandose un ticket que se almacena en la base de datos y un email que se envía al comprador con el detalle de la compra realizada.</p>
 <h2>Contacto</h2>
