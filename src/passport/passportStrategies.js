@@ -162,6 +162,7 @@ passport.use(
               last_name: " ",
               email: id.toString() + "@gmail.com",
               password: hashPassword,
+              role: "admin",
             };
             createUser(user);
           }
@@ -180,6 +181,7 @@ passport.use(
             last_name: " ",
             email: email,
             password: hashPassword,
+            role: "admin",
           };
           await transporter.sendMail({
             to: user.email,
