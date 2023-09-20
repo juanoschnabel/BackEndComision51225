@@ -144,7 +144,9 @@ passport.use(
       }
       try {
         if (email === null) {
-          const userBD = await userModel.findOne({ email: id.toString() });
+          const userBD = await userModel.findOne({
+            email: id.toString() + "@gmail.com",
+          });
           if (userBD) {
             const newLogin = DateTime.now();
             await userModel.findByIdAndUpdate(userBD._id, {
