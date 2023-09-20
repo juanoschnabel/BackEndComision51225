@@ -34,13 +34,15 @@
 <p>-"swagger-jsdoc": "^6.2.8"-</p>
 <p>-"swagger-ui-express": "^5.0.0"-</p>
 <p>-"winston": "^3.10.0"-</p>
+<h3>Dependencias de desarrollo</h3>
+<p>-"nodemon": "^2.0.22"-</p>
 <h2>Instalación</h2>
 <p>Clonar el proyecto desde el repositorio público de Github. Puedes copiar el link desde aquí ("https://github.com/juanoschnabel/BackEndComision51225.git"). Luego posicionate en la carpeta deseada e inicia una consola. Allí ingrese el comando "git clone https://github.com/juanoschnabel/BackEndComision51225.git". Una vez finalizado el proceso inicie el VSC en el directorio. Abra una terminal y ejecute el comando "npm i". De esta forma tendrás el proyecto listo para iniciar.</p>
 <h2>Usuarios</h2>
 <h3>Tipos de Usuarios</h3>
 <p>Existen tres tipos de usuarios diferentes y cada uno tiene diferentes tipos de funciones</p>
 <h4>User</h4>
-<p>El usuario de tipo "user" es el que puede solo comprar productos. Como tal, solo puede gestionar su carrito de compras, interactuar con el chat de la aplicación y realizar el proceso de compra completo. Este usuario es el que se genera por default al registrarse con Google.</p>
+<p>El usuario de tipo user es el que puede solo comprar productos. Como tal, solo puede gestionar su carrito de compras, interactuar con el chat de la aplicación y realizar el proceso de compra completo. Este usuario es el que se genera por default al registrarse con Google.</p>
 <h4>Premium</h4>
 <p>El usuario premium es el que puede comprar y vender productos dentro de la plataforma. Tiene atribuciones que le permiten gestionar su carrito de compras, realizar el proceso de compra completo y gestionar sus productos, pudiendo publicar productos nuevos en la plataforma y eliminar sus productos de la base de datos. Como comprador, no puede agregar al carrito los productos que el mismo crea en la base de datos.</p>
 <h4>Admininstrador</h4>
@@ -61,6 +63,6 @@
 <h2>Estado del Proyecto</h2>
 <p>La aplicación está en desarrollo activo.</p>
 <h2>Notas Adicionales</h2>
-<p>Para ingresar a las rutas especificadas en la consigna se debe forzar en la URL la siguiente dirección ("https://backendcomision51225-production.up.railway.app/api/users"). Esto nos redirigirá a una vista donde podremos ver todos lo susuarios registrados en la base de datos. Además tenemos el botón "Eliminar usuarios vencidos". Dicho botón elimina de la base de datos a todos los usuarios que hayan pasado mas de dos horas sin loguearse en la aplicación. Además les envía un mail informandoles de la acción realizada.</p>
+<p>Para ingresar a las rutas especificadas en la consigna se debe forzar en la URL la siguiente dirección ("https://backendcomision51225-production.up.railway.app/api/users"). Esto nos redirigirá a una vista donde podremos ver todos los usuarios registrados en la base de datos. Además tenemos el botón "Eliminar usuarios vencidos". Dicho botón elimina de la base de datos a todos los usuarios que hayan pasado mas de dos horas sin loguearse en la aplicación y les envía un mail informandoles de la acción realizada.</p>
 </body>
 </html>
