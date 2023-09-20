@@ -34,7 +34,7 @@
 <p>-"swagger-jsdoc": "^6.2.8"-</p>
 <p>-"swagger-ui-express": "^5.0.0"-</p>
 <p>-"winston": "^3.10.0"-</p>
-<h3>Dependencias de desarrollo</h3>
+<h3>Dependencias de desarrollo:</h3>
 <p>-"nodemon": "^2.0.22"-</p>
 <h2>Instalación</h2>
 <p>Clonar el proyecto desde el repositorio público de Github. Puedes copiar el link desde aquí ("https://github.com/juanoschnabel/BackEndComision51225.git"). Luego posicionate en la carpeta deseada e inicia una consola. Allí ingrese el comando "git clone https://github.com/juanoschnabel/BackEndComision51225.git". Una vez finalizado el proceso inicie el VSC en el directorio. Abra una terminal y ejecute el comando "npm i". De esta forma tendrás el proyecto listo para iniciar.</p>
